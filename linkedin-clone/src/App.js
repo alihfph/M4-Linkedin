@@ -8,11 +8,14 @@ import Registration from "./components/Registrationpage";
 function App() {
   return (
     <Router>
-      <NavBar />
-      <div className="App">
-        {/* <Profile /> */}
+      <Route exact path="/">
+        <NavBar />
+        <Profile />
+      </Route>
+
+      <Route path="/register">
         <Registration />
-      </div>
+      </Route>
     </Router>
   );
 }

@@ -7,6 +7,7 @@ import {
   FormControl,
   Container,
 } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 export default class NavBar extends React.Component {
   render() {
@@ -49,7 +50,9 @@ export default class NavBar extends React.Component {
                   Job Posting Account
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.7">Sign Out</NavDropdown.Item>
+                <NavDropdown.Item>
+                  <Link to="/register"> Sign Out</Link>
+                </NavDropdown.Item>
               </NavDropdown>
               <NavDropdown
                 title="Work"
