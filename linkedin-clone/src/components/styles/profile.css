@@ -26,3 +26,21 @@
   box-shadow: inset 0px 0px 2px 1px rgb(14, 14, 14);
   background-color: rgb(228, 228, 228);
 }
+.Experiences {
+  margin-top: 20px;
+  min-height: 40vh;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}
+.Skills {
+  margin-top: 20px;
+  min-height: 40vh;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}

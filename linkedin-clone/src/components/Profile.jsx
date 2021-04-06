@@ -61,8 +61,8 @@ class Profile extends React.Component {
                 </Card.Text>
               </Card.Body>
             </Card>
-            <div className="Experiences"></div>
-            <div className="Experiences"></div>
+            <div className="Experiences">experiences will be fetched here</div>
+            <div className="Skills">skills will be fetched here</div>
           </Col>
           <Col
             md={3}
