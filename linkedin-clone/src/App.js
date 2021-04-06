@@ -1,12 +1,17 @@
-
-import './App.css';
-import Profile from './components/Profile';
+import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import NavBar from "./components/Navbar";
+import Profile from "./components/Profile";
+
 function App() {
   return (
-    <div className="App">
-     <Profile/>
-    </div>
+    <Router>
+      <NavBar />
+      <div className="App">
+        <Profile />
+      </div>
+    </Router>
   );
 }
 
