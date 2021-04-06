@@ -8,7 +8,7 @@ import {
   Container,
   ListGroup,
 } from "react-bootstrap";
-
+import "./styles/profile.css";
 class Profile extends React.Component {
   render() {
     return (
@@ -41,50 +41,28 @@ class Profile extends React.Component {
 
                 <Card.Text>
                   <Row>
-                    <Col xs={12} lg={6}>
-                      <h3>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 21 21"
-                          data-supported-dps="21x21"
-                          fill="currentColor"
-                          width="21"
-                          height="21"
-                          focusable="false"
-                          style={{ color: "#C37D16" }}
-                        >
-                          <g>
-                            <path d="M19.5 0h-18A1.5 1.5 0 000 1.5v18A1.5 1.5 0 001.5 21h18a1.5 1.5 0 001.5-1.5v-18A1.5 1.5 0 0019.5 0zM6 18H3V8h3zM4.5 6.25a1.75 1.75 0 110-3.5 1.75 1.75 0 110 3.5zM18 18h-3v-5.09c0-1.62-.74-2.44-1.84-2.44A2.31 2.31 0 0011 13v5H8V8h3v1.39a4.06 4.06 0 013.3-1.63c1.77 0 3.66.93 3.66 4z"></path>
-                          </g>
-                        </svg>
-                      </h3>
-                      <div></div>
-                      <h6></h6>
+                    <Col xs={12}>Bagnolo in Piano, Emilia-Romagna, Italy</Col>
+                    <Col xs={12}>
+                      <p>42 connections</p> <p> Contact info</p>
                     </Col>
-                    <Col lg={6}>
+                    <Col style={{ display: "flex" }} xs={4} md={12}>
                       <div>
                         {" "}
-                        <DropdownButton
-                          id="dropdown-basic-button"
-                          size="sm"
-                          title="Add profile section"
-                        >
-                          <Dropdown.Item>Intro</Dropdown.Item>
-                          <Dropdown.Item>About</Dropdown.Item>
-                          <Dropdown.Item>Featured</Dropdown.Item>
-                          <Dropdown.Item>Background</Dropdown.Item>
-                          <Dropdown.Item>Skills</Dropdown.Item>
-                          <Dropdown.Item>Accomplishments</Dropdown.Item>
-                          <Dropdown.Item>Additional information</Dropdown.Item>
-                          <Dropdown.Item>Supported languages</Dropdown.Item>
-                        </DropdownButton>
-                        <button>More...</button>
+                        <button className="pButton openToButton">
+                          Open to
+                        </button>
+                        <button className="pButton greyButton">
+                          Add profile section
+                        </button>
+                        <button className="greyButton">More...</button>
                       </div>
                     </Col>
                   </Row>
                 </Card.Text>
               </Card.Body>
             </Card>
+            <div className="Experiences"></div>
+            <div className="Experiences"></div>
           </Col>
           <Col
             md={3}
