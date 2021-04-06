@@ -2,6 +2,49 @@ import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import React from "react";
 
 export default class Registration extends React.Component {
+  state = {
+    area: "",
+    bio: "",
+    email: "",
+    image:
+      "https://i.pinimg.com/736x/0c/45/2c/0c452ca459fcf28b3c3b5322d11cbc62.jpg",
+    name: "",
+    password: "",
+    surname: "",
+    title: "",
+    username: "",
+  };
+
+  registerUser = async () => {
+    try {
+      let response = await fetch(
+        "https://striveschool-api.herokuapp.com/api/account/register",
+        {
+          method: "POST",
+          body: JSON.stringify(this.state.appointment),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.ok) {
+        alert("appointment saved!");
+        this.setState({
+          appointment: {
+            name: "",
+            description: "",
+            price: 0,
+            time: "",
+          },
+        });
+        this.fetchData();
+      } else {
+        alert("ERROR!");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   render() {
     return (
       <Container>
@@ -29,10 +72,10 @@ export default class Registration extends React.Component {
                 </Form.Text>
               </Form.Group>
 
-              {/* <Form.Group controlId="formGridUsername">
-            <Form.Label>Username</Form.Label>
-            <Form.Control placeholder="Username" />
-          </Form.Group> */}
+              <Form.Group controlId="formGridUsername">
+                <Form.Label>Username</Form.Label>
+                <Form.Control placeholder="Username" />
+              </Form.Group>
 
               <Form.Group controlId="formBasicPassword">
                 <Form.Label>Password</Form.Label>
