@@ -28,7 +28,7 @@ export default class Registration extends React.Component {
         }
       );
       if (response.ok) {
-        alert("appointment saved!");
+        alert("Registration was successful!");
         this.setState({
           area: "",
           bio: "",
