@@ -11,7 +11,7 @@ import {
 export default class NavBar extends React.Component {
   render() {
     return (
-      <Navbar bg="light" expand="lg" className="py-0">
+      <Navbar style={{ backgroundColor: "white" }} expand="lg" className="py-0">
         <Container>
           <Navbar.Brand href="#home">
             <img

@@ -8,13 +8,15 @@ import {
   Container,
   ListGroup,
 } from "react-bootstrap";
+import Adv from "./Adv";
+import RelatedUsers from "./RelatedUsers";
 import "./styles/profile.css";
 class Profile extends React.Component {
   render() {
     return (
       <Container>
         <Row>
-          <Col md={9} style={{ marginTop: "10vh" }}>
+          <Col md={9} style={{ marginTop: "5vh" }}>
             <Card>
               <Card.Img
                 variant="top"
@@ -66,16 +68,37 @@ class Profile extends React.Component {
           </Col>
           <Col
             md={3}
-            style={{ marginTop: "10vh" }}
+            style={{ marginTop: "5vh" }}
             className="d-none d-md-block"
           >
-            <ListGroup>
+            <ListGroup style={{ width: "299px" }}>
               <ListGroup.Item>Cras justo odio</ListGroup.Item>
               <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
               <ListGroup.Item>Morbi leo risus</ListGroup.Item>
               <ListGroup.Item>Porta ac consectetur ac</ListGroup.Item>
               <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
             </ListGroup>
+            <div style={{ marginTop: "20px" }}>
+              <Adv />
+            </div>
+            <div
+              style={{
+                marginTop: "20px",
+                backgroundColor: "white",
+                width: "299px",
+              }}
+            >
+              <RelatedUsers />
+            </div>
+            <div
+              style={{
+                marginTop: "20px",
+                backgroundColor: "white",
+                width: "299px",
+              }}
+            >
+              <RelatedUsers />
+            </div>
           </Col>
         </Row>
       </Container>
