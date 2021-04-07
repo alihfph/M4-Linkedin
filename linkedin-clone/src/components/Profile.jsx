@@ -1,11 +1,29 @@
 import React from "react";
-import { Col, Row, Card, Container, ListGroup } from "react-bootstrap";
+import {
+  Col,
+  Row,
+  Card,
+  Container,
+  ListGroup,
+  Modal,
+  Button,
+  Form,
+} from "react-bootstrap";
 import Adv from "./Adv";
 import RelatedUsers from "./RelatedUsers";
 import "./styles/profile.css";
 class Profile extends React.Component {
   state = {
     myProfile: [],
+    show: false,
+    body: {
+      role: "",
+      company: "",
+      startDate: "",
+      endDate: "",
+      description: "",
+      area:""
+    }
   };
   componentDidMount = async () => {
     try {
@@ -22,6 +40,30 @@ class Profile extends React.Component {
         this.setState({ myProfile });
         console.log(myProfile);
       }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  handleShow = () => {
+    this.setState({ show: true });
+  };
+  onHide = () => {
+    this.setState({ show: false });
+  };
+  postExp = async () => {
+    try {
+      let response = await fetch(
+        "https://striveschool-api.herokuapp.com/api/profile/:userId/experiences",
+        {
+          method: "POST",
+          body: JSON.stringify(this.state.body)
+          headers: {
+            Authorization: `Bearer ${this.props.bearer}`,
+            Content-Type: Application/Json
+          },
+        }
+      );
     } catch (error) {
       console.log(error);
     }
@@ -81,7 +123,18 @@ class Profile extends React.Component {
                 </Card.Text>
               </Card.Body>
             </Card>
-            <div className="Experiences">experiences will be fetched here</div>
+            <div className="Experiences">
+              <Row>
+                <Col className="alignToTheRight" xs={12}>
+                  <img
+                    onClick={() => this.handleShow()}
+                    height={40}
+                    alt="plus-ico"
+                    src="https://cdn0.iconfinder.com/data/icons/very-basic-2-android-l-lollipop-icon-pack/24/plus-512.png"
+                  />
+                </Col>
+              </Row>
+            </div>
             <div className="Skills">skills will be fetched here</div>
           </Col>
           <Col
@@ -119,6 +172,50 @@ class Profile extends React.Component {
             </div>
           </Col>
         </Row>
+
+        <Modal show={this.state.show}>
+          <Modal.Header closeButton>
+            <Modal.Title>Add experience</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group>
+                <Form.Label>Role</Form.Label>
+                <Form.Control type="text" placeholder="role" />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Company</Form.Label>
+                <Form.Control type="text" placeholder="company" />
+              </Form.Group>
+              <Row>
+                <Col>
+                  <label> Start Date</label>
+                  <input type="date" />
+                </Col>
+                <Col>
+                  <label>End Date</label>
+                  <input type="date" />
+                </Col>
+              </Row>
+              <Form.Group>
+                <Form.Label>Description</Form.Label>
+                <Form.Control as="textarea" rows={3} />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Area</Form.Label>
+                <Form.Control type="text" placeholder="area" />
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => this.onHide()}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={() => this.onHide()}>
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </Container>
     );
   }
