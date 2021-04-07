@@ -11,12 +11,15 @@ import {
 } from "react-bootstrap";
 import moment from "moment";
 import Adv from "./Adv";
-import RelatedUsers from "./RelatedUsers";
 import "./styles/profile.css";
+
 class Profile extends React.Component {
   state = {
-    myProfile: [],
     show: false,
+    myProfile: [],
+    relatedProfiles: [],
+    suggestedProfiles: [],
+    experiences: [],
     body: {
       role: "",
       company: "",
@@ -25,12 +28,34 @@ class Profile extends React.Component {
       description: "",
       area: "",
     },
-    experiences: [],
   };
 
   componentDidMount = async () => {
     await this.fetchMe();
     await this.getExp();
+    await this.catchThemAll();
+  };
+
+  catchThemAll = async () => {
+    try {
+      let response = await fetch(
+        "https://striveschool-api.herokuapp.com/api/profile/",
+        {
+          headers: {
+            Authorization: `Bearer ${this.props.bearer}`,
+          },
+        }
+      );
+      if (response.ok) {
+        let allProfiles = await response.json();
+        this.setState({ relatedProfiles: allProfiles.slice(95, 100) });
+        this.setState({ suggestedProfiles: allProfiles.slice(100, 105) });
+        console.log(this.state.relatedProfiles);
+        console.log(this.state.suggestedProfiles);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   fetchMe = async () => {
@@ -46,7 +71,7 @@ class Profile extends React.Component {
       if (response.ok) {
         let myProfile = await response.json();
         this.setState({ myProfile });
-        console.log(myProfile);
+        console.log(this.state.myProfile);
       }
     } catch (error) {
       console.log(error);
@@ -54,7 +79,6 @@ class Profile extends React.Component {
   };
 
   getExp = async () => {
-    console.log(this.state.myProfile);
     try {
       let response = await fetch(
         `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences`,
@@ -231,7 +255,22 @@ class Profile extends React.Component {
                 width: "299px",
               }}
             >
-              <RelatedUsers />
+              <div>
+                <ListGroup>
+                  {this.state.relatedProfiles.length > 0 &&
+                    this.state.relatedProfiles.map((user) => {
+                      return (
+                        <div style={{ width: "299px" }} className="proPic">
+                          <img height={40} src={user.image} alt={user._id} />
+                          <p>
+                            {user.name} {user.surname}
+                          </p>
+                        </div>
+                      );
+                    })}
+                </ListGroup>
+              </div>
+              );
             </div>
             <div
               style={{
@@ -240,7 +279,22 @@ class Profile extends React.Component {
                 width: "299px",
               }}
             >
-              <RelatedUsers />
+              <div>
+                <ListGroup>
+                  {this.state.suggestedProfiles.length > 0 &&
+                    this.state.suggestedProfiles.map((user) => {
+                      return (
+                        <div style={{ width: "299px" }} className="proPic">
+                          <img height={40} src={user.image} alt={user._id} />
+                          <p>
+                            {user.name} {user.surname}
+                          </p>
+                        </div>
+                      );
+                    })}
+                </ListGroup>
+              </div>
+              );
             </div>
           </Col>
         </Row>
