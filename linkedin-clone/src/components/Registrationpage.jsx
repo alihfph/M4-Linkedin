@@ -51,7 +51,6 @@ export default class Registration extends React.Component {
     }
   };
   render() {
-    console.log(this.props);
     return (
       <Container>
         <h1 className="text-center py-4">

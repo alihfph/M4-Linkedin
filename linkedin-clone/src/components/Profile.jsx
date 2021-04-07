@@ -22,10 +22,17 @@ class Profile extends React.Component {
       startDate: "",
       endDate: "",
       description: "",
-      area:""
-    }
+      area: "",
+    },
+    experiences: [],
   };
+
   componentDidMount = async () => {
+    await this.fetchMe();
+    await this.getExp();
+  };
+
+  fetchMe = async () => {
     try {
       let response = await fetch(
         "https://striveschool-api.herokuapp.com/api/profile/me",
@@ -45,6 +52,27 @@ class Profile extends React.Component {
     }
   };
 
+  getExp = async () => {
+    console.log(this.state.myProfile);
+    try {
+      let response = await fetch(
+        `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences`,
+        {
+          headers: {
+            Authorization: `Bearer ${this.props.bearer}`,
+          },
+        }
+      );
+      if (response.ok) {
+        let data = await response.json();
+        this.setState({ experiences: data });
+        console.log(this.state.experiences);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   handleShow = () => {
     this.setState({ show: true });
   };
@@ -54,16 +82,32 @@ class Profile extends React.Component {
   postExp = async () => {
     try {
       let response = await fetch(
-        "https://striveschool-api.herokuapp.com/api/profile/:userId/experiences",
+        `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences`,
         {
           method: "POST",
-          body: JSON.stringify(this.state.body)
+          body: JSON.stringify(this.state.body),
           headers: {
             Authorization: `Bearer ${this.props.bearer}`,
-            Content-Type: Application/Json
+            "Content-type": "application/json",
           },
         }
       );
+      if (response.ok) {
+        alert("Experiences ADDED");
+        this.getExp();
+        this.setState({
+          body: {
+            role: "",
+            company: "",
+            startDate: "",
+            endDate: "",
+            description: "",
+            area: "",
+          },
+        });
+      } else {
+        alert("You failed ");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -178,32 +222,95 @@ class Profile extends React.Component {
             <Modal.Title>Add experience</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form>
+            <Form
+              onSubmit={(e) => {
+                e.preventDefault();
+                this.postExp();
+              }}
+            >
               <Form.Group>
                 <Form.Label>Role</Form.Label>
-                <Form.Control type="text" placeholder="role" />
+                <Form.Control
+                  onChange={(e) =>
+                    this.setState({
+                      ...this.state.body,
+                      role: e.target.value,
+                    })
+                  }
+                  value={this.state.body.role}
+                  type="text"
+                  placeholder="role"
+                />
               </Form.Group>
               <Form.Group>
                 <Form.Label>Company</Form.Label>
-                <Form.Control type="text" placeholder="company" />
+                <Form.Control
+                  onChange={(e) =>
+                    this.setState({
+                      ...this.state.body,
+                      company: e.target.value,
+                    })
+                  }
+                  value={this.state.body.company}
+                  type="text"
+                  placeholder="company"
+                />
               </Form.Group>
               <Row>
                 <Col>
                   <label> Start Date</label>
-                  <input type="date" />
+                  <input
+                    onChange={(e) =>
+                      this.setState({
+                        ...this.state.body,
+                        startDate: e.target.value,
+                      })
+                    }
+                    value={this.state.body.startDate}
+                    type="date"
+                  />
                 </Col>
                 <Col>
                   <label>End Date</label>
-                  <input type="date" />
+                  <input
+                    onChange={(e) =>
+                      this.setState({
+                        ...this.state.body,
+                        endDate: e.target.value,
+                      })
+                    }
+                    value={this.state.body.endDate}
+                    type="date"
+                  />
                 </Col>
               </Row>
               <Form.Group>
                 <Form.Label>Description</Form.Label>
-                <Form.Control as="textarea" rows={3} />
+                <Form.Control
+                  onChange={(e) =>
+                    this.setState({
+                      ...this.state.body,
+                      description: e.target.value,
+                    })
+                  }
+                  value={this.state.body.description}
+                  as="textarea"
+                  rows={3}
+                />
               </Form.Group>
               <Form.Group>
                 <Form.Label>Area</Form.Label>
-                <Form.Control type="text" placeholder="area" />
+                <Form.Control
+                  onChange={(e) =>
+                    this.setState({
+                      ...this.state.body,
+                      area: e.target.value,
+                    })
+                  }
+                  value={this.state.body.area}
+                  type="text"
+                  placeholder="area"
+                />
               </Form.Group>
             </Form>
           </Modal.Body>
@@ -211,9 +318,7 @@ class Profile extends React.Component {
             <Button variant="secondary" onClick={() => this.onHide()}>
               Close
             </Button>
-            <Button variant="primary" onClick={() => this.onHide()}>
-              Save Changes
-            </Button>
+            <Button variant="primary">Save Changes</Button>
           </Modal.Footer>
         </Modal>
       </Container>
