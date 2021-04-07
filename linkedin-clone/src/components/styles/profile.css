@@ -33,15 +33,24 @@
   background-color: rgb(228, 228, 228);
 }
 .Experiences {
+  position: relative;
   transition: 0.25s ease;
   background-color: white;
   margin-top: 20px;
   min-height: 40vh;
   border-radius: 4px;
-  display: flex;
-  justify-content: center;
   align-items: center;
   border: 1px solid rgba(0, 0, 0, 0.125);
+}
+.Experiences > .row > .col-12 > img {
+  position: absolute;
+  cursor: pointer;
+  right: 15px;
+  top: 10px;
+}
+.alignToTheRight {
+  display: flex;
+  justify-content: flex-end;
 }
 .Skills {
   transition: 0.25s ease;
@@ -59,4 +68,8 @@
 }
 .Skills:hover {
   box-shadow: 0px 0px 15px -2px rgb(160, 160, 160);
+}
+.date {
+  display: flex;
+  flex-direction: row;
 }
