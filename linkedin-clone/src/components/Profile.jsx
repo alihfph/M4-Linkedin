@@ -9,6 +9,7 @@ import {
   Button,
   Form,
 } from "react-bootstrap";
+import moment from "moment";
 import Adv from "./Adv";
 import RelatedUsers from "./RelatedUsers";
 import "./styles/profile.css";
@@ -79,7 +80,8 @@ class Profile extends React.Component {
   onHide = () => {
     this.setState({ show: false });
   };
-  postExp = async () => {
+  postExp = async (e) => {
+    e.preventDefault();
     try {
       let response = await fetch(
         `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences`,
@@ -88,7 +90,7 @@ class Profile extends React.Component {
           body: JSON.stringify(this.state.body),
           headers: {
             Authorization: `Bearer ${this.props.bearer}`,
-            "Content-type": "application/json",
+            "Content-Type": "application/json",
           },
         }
       );
@@ -168,16 +170,42 @@ class Profile extends React.Component {
               </Card.Body>
             </Card>
             <div className="Experiences">
-              <Row>
-                <Col className="alignToTheRight" xs={12}>
-                  <img
-                    onClick={() => this.handleShow()}
-                    height={40}
-                    alt="plus-ico"
-                    src="https://cdn0.iconfinder.com/data/icons/very-basic-2-android-l-lollipop-icon-pack/24/plus-512.png"
-                  />
-                </Col>
-              </Row>
+              <div>
+                <Row>
+                  <Col className="alignToTheRight" xs={12}>
+                    <img
+                      onClick={() => this.handleShow()}
+                      height={40}
+                      alt="plus-ico"
+                      src="https://cdn0.iconfinder.com/data/icons/very-basic-2-android-l-lollipop-icon-pack/24/plus-512.png"
+                    />
+                  </Col>
+                </Row>
+              </div>
+              {this.state.experiences.length > 0 &&
+                this.state.experiences.map((experience) => (
+                  <div>
+                    <Row>
+                      <Col xs={5}>
+                        <strong>{experience.company}</strong>
+                        <p>{experience.description}</p>
+                      </Col>
+                      <Col xs={5}>
+                        <div className="text-muted">
+                          <p>
+                            {moment(experience.startDate).format(
+                              "MMMM Do YYYY"
+                            )}
+                            {moment(experience.endDate).format("MMMM Do YYYY")}
+                          </p>
+                        </div>
+                      </Col>
+                      <Col xs={1}>
+                        <button>edit</button>
+                      </Col>
+                    </Row>
+                  </div>
+                ))}
             </div>
             <div className="Skills">skills will be fetched here</div>
           </Col>
@@ -233,8 +261,10 @@ class Profile extends React.Component {
                 <Form.Control
                   onChange={(e) =>
                     this.setState({
-                      ...this.state.body,
-                      role: e.target.value,
+                      body: {
+                        ...this.state.body,
+                        role: e.target.value,
+                      },
                     })
                   }
                   value={this.state.body.role}
@@ -247,8 +277,7 @@ class Profile extends React.Component {
                 <Form.Control
                   onChange={(e) =>
                     this.setState({
-                      ...this.state.body,
-                      company: e.target.value,
+                      body: { ...this.state.body, company: e.target.value },
                     })
                   }
                   value={this.state.body.company}
@@ -262,8 +291,7 @@ class Profile extends React.Component {
                   <input
                     onChange={(e) =>
                       this.setState({
-                        ...this.state.body,
-                        startDate: e.target.value,
+                        body: { ...this.state.body, startDate: e.target.value },
                       })
                     }
                     value={this.state.body.startDate}
@@ -275,8 +303,7 @@ class Profile extends React.Component {
                   <input
                     onChange={(e) =>
                       this.setState({
-                        ...this.state.body,
-                        endDate: e.target.value,
+                        body: { ...this.state.body, endDate: e.target.value },
                       })
                     }
                     value={this.state.body.endDate}
@@ -289,8 +316,7 @@ class Profile extends React.Component {
                 <Form.Control
                   onChange={(e) =>
                     this.setState({
-                      ...this.state.body,
-                      description: e.target.value,
+                      body: { ...this.state.body, description: e.target.value },
                     })
                   }
                   value={this.state.body.description}
@@ -303,8 +329,7 @@ class Profile extends React.Component {
                 <Form.Control
                   onChange={(e) =>
                     this.setState({
-                      ...this.state.body,
-                      area: e.target.value,
+                      body: { ...this.state.body, area: e.target.value },
                     })
                   }
                   value={this.state.body.area}
@@ -318,7 +343,9 @@ class Profile extends React.Component {
             <Button variant="secondary" onClick={() => this.onHide()}>
               Close
             </Button>
-            <Button variant="primary">Save Changes</Button>
+            <Button variant="primary" onClick={(e) => this.postExp(e)}>
+              Save Changes
+            </Button>
           </Modal.Footer>
         </Modal>
       </Container>
