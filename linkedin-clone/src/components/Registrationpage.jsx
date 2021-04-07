@@ -1,6 +1,6 @@
 import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import React from "react";
-
+import "./styles/registration.css";
 export default class Registration extends React.Component {
   state = {
     area: "",
@@ -28,7 +28,7 @@ export default class Registration extends React.Component {
         }
       );
       if (response.ok) {
-        alert("appointment saved!");
+        alert("user registered correctly!");
         this.setState({
           area: "",
           bio: "",
