@@ -4,6 +4,29 @@ import Adv from "./Adv";
 import RelatedUsers from "./RelatedUsers";
 import "./styles/profile.css";
 class Profile extends React.Component {
+  state = {
+    myProfile: [],
+  };
+  componentDidMount = async () => {
+    try {
+      let response = await fetch(
+        "https://striveschool-api.herokuapp.com/api/profile/me",
+        {
+          headers: {
+            Authorization: `Bearer ${this.props.bearer}`,
+          },
+        }
+      );
+      if (response.ok) {
+        let myProfile = await response.json();
+        this.setState({ myProfile });
+        console.log(myProfile);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   render() {
     return (
       <Container>
@@ -20,7 +43,7 @@ class Profile extends React.Component {
                 <div>
                   <div style={{ marginTop: "-130px" }}>
                     <img
-                      src="https://orthosera.com/wp-content/uploads/2016/02/user-profile-placeholder.png"
+                      src={this.state.myProfile.image}
                       alt="placeholder"
                       height="160px"
                       width="160px"
@@ -35,13 +58,16 @@ class Profile extends React.Component {
 
                 <Card.Text>
                   <Row>
-                    <Col xs={12}>Bagnolo in Piano, Emilia-Romagna, Italy</Col>
+                    <Col xs={12}>
+                      {this.state.myProfile.name} {this.state.myProfile.surname}
+                    </Col>
+                    <Col xs={12}>{this.state.myProfile.bio} </Col>
+                    <Col xs={12}>{this.state.myProfile.area}</Col>
                     <Col xs={12}>
                       <p>42 connections</p> <p> Contact info</p>
                     </Col>
                     <Col style={{ display: "flex" }} xs={4} md={12}>
                       <div>
-                        {" "}
                         <button className="pButton openToButton">
                           Open to
                         </button>

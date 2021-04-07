@@ -37,7 +37,7 @@ class App extends React.Component {
       <>
         <Route exact path="/">
           <NavBar />
-          <Profile />
+          <Profile bearer={this.state.bearer} />
         </Route>
 
         <Route
