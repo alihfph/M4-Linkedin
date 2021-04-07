@@ -50,9 +50,7 @@ export default class NavBar extends React.Component {
                   Job Posting Account
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item>
-                  <Link to="/register"> Sign Out</Link>
-                </NavDropdown.Item>
+                <NavDropdown.Item href="/register">Sign Out</NavDropdown.Item>
               </NavDropdown>
               <NavDropdown
                 title="Work"
