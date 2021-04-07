@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  Col,
-  Row,
-  Card,
-  Dropdown,
-  DropdownButton,
-  Container,
-  ListGroup,
-} from "react-bootstrap";
+import { Col, Row, Card, Container, ListGroup } from "react-bootstrap";
 import Adv from "./Adv";
 import RelatedUsers from "./RelatedUsers";
 import "./styles/profile.css";

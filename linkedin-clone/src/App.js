@@ -1,23 +1,63 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Route, withRouter } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import Profile from "./components/Profile";
 import Registration from "./components/Registrationpage";
+import Login from "./components/LoginPage";
+import React from "react";
 
-function App() {
-  return (
-    <Router>
-      <Route exact path="/">
-        <NavBar />
-        <Profile />
-      </Route>
+class App extends React.Component {
+  state = {
+    bearer: "",
+    data: {
+      area: "",
+      bio: "",
+      email: "",
+      image:
+        "https://i.pinimg.com/736x/0c/45/2c/0c452ca459fcf28b3c3b5322d11cbc62.jpg",
+      name: "",
+      password: "",
+      surname: "",
+      title: "",
+      username: "",
+    },
+  };
+  updateBearer = (hi2) => {
+    this.setState({ bearer: hi2 });
+    if (this.state.bearer !== "") {
+      this.props.history.push("/");
+    }
+  };
+  updateState = (subState) => {
+    this.setState({ data: subState });
+  };
+  render() {
+    return (
+      <>
+        <Route exact path="/">
+          <NavBar />
+          <Profile />
+        </Route>
 
-      <Route path="/register">
-        <Registration />
-      </Route>
-    </Router>
-  );
+        <Route
+          exact
+          path="/register"
+          render={(props) => (
+            <Registration
+              {...props}
+              {...this.state}
+              setState={this.updateState}
+              setState2={this.updateBearer}
+            />
+          )}
+        />
+        <Route path="/login">
+          <Login />
+        </Route>
+      </>
+    );
+  }
 }
 
-export default App;
+export default withRouter(App);

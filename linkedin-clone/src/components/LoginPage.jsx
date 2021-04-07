@@ -1,7 +1,7 @@
 import { Form, Button, Container } from "react-bootstrap";
 import React from "react";
 
-export default class LoginPage extends React.Component {
+export default class Login extends React.Component {
   render() {
     return (
       <div

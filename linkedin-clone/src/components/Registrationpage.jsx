@@ -14,20 +14,20 @@ export default class Registration extends React.Component {
     title: "",
     username: "",
   };
-
   registerUser = async () => {
     try {
       let response = await fetch(
         "https://striveschool-api.herokuapp.com/api/account/register",
         {
           method: "POST",
-          body: JSON.stringify(this.state),
+          body: JSON.stringify(this.props.data),
           headers: {
             "Content-Type": "application/json",
           },
         }
       );
       if (response.ok) {
+        const res = await response.json();
         alert("Registration was successful!");
         this.setState({
           area: "",
@@ -41,6 +41,8 @@ export default class Registration extends React.Component {
           title: "",
           username: "",
         });
+        this.props.setState2(res.access_token);
+        console.log(res);
       } else {
         alert("ERROR!");
       }
@@ -49,6 +51,7 @@ export default class Registration extends React.Component {
     }
   };
   render() {
+    console.log(this.props);
     return (
       <Container>
         <h1 className="text-center py-4">
@@ -67,11 +70,11 @@ export default class Registration extends React.Component {
                 <Form.Control
                   onChange={(e) =>
                     this.setState({
-                      ...this.state,
+                      ...this.props,
                       name: e.target.value,
                     })
                   }
-                  value={this.state.name}
+                  value={this.props.name}
                   type="text"
                   placeholder="Name"
                 />
@@ -82,11 +85,11 @@ export default class Registration extends React.Component {
                 <Form.Control
                   onChange={(e) =>
                     this.setState({
-                      ...this.state,
+                      ...this.props,
                       surname: e.target.value,
                     })
                   }
-                  value={this.state.surname}
+                  value={this.props.surname}
                   type="text"
                   placeholder="Surname"
                 />
@@ -97,11 +100,11 @@ export default class Registration extends React.Component {
                 <Form.Control
                   onChange={(e) =>
                     this.setState({
-                      ...this.state,
+                      ...this.props,
                       email: e.target.value,
                     })
                   }
-                  value={this.state.email}
+                  value={this.props.email}
                   type="email"
                   placeholder="Enter email"
                 />
@@ -115,11 +118,11 @@ export default class Registration extends React.Component {
                 <Form.Control
                   onChange={(e) =>
                     this.setState({
-                      ...this.state,
+                      ...this.props,
                       username: e.target.value,
                     })
                   }
-                  value={this.state.username}
+                  value={this.props.username}
                   placeholder="Username"
                 />
               </Form.Group>
@@ -129,11 +132,11 @@ export default class Registration extends React.Component {
                 <Form.Control
                   onChange={(e) =>
                     this.setState({
-                      ...this.state,
+                      ...this.props,
                       password: e.target.value,
                     })
                   }
-                  value={this.state.password}
+                  value={this.props.password}
                   type="password"
                   placeholder="Password"
                 />
@@ -144,11 +147,11 @@ export default class Registration extends React.Component {
                 <Form.Control
                   onChange={(e) =>
                     this.setState({
-                      ...this.state,
+                      ...this.props,
                       title: e.target.value,
                     })
                   }
-                  value={this.state.title}
+                  value={this.props.title}
                   placeholder="Job Title"
                 />
               </Form.Group>
@@ -158,11 +161,11 @@ export default class Registration extends React.Component {
                 <Form.Control
                   onChange={(e) =>
                     this.setState({
-                      ...this.state,
+                      ...this.props,
                       bio: e.target.value,
                     })
                   }
-                  value={this.state.bio}
+                  value={this.props.bio}
                   placeholder="About you..."
                   as="textarea"
                   rows={3}
@@ -174,16 +177,20 @@ export default class Registration extends React.Component {
                 <Form.Control
                   onChange={(e) =>
                     this.setState({
-                      ...this.state,
+                      ...this.props,
                       area: e.target.value,
                     })
                   }
-                  value={this.state.area}
+                  value={this.props.area}
                   placeholder="City, Region, Country"
                 />
               </Form.Group>
 
-              <Button variant="primary" type="submit">
+              <Button
+                variant="primary"
+                type="submit"
+                onClick={() => this.props.setState(this.state)}
+              >
                 Submit
               </Button>
             </Form>
