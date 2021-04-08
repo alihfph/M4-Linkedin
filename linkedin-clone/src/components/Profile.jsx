@@ -79,20 +79,59 @@ class Profile extends React.Component {
     }
   };
 
-  getExp = async () => {
+  getExp = async (id) => {
+    try {
+      if (id) {
+        let response = await fetch(
+          `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences/` +
+            id,
+          {
+            headers: {
+              Authorization: `Bearer ${this.props.bearer}`,
+            },
+          }
+        );
+        if (response.ok) {
+          let data = await response.json();
+          this.setState({ experiences: data });
+        }
+      } else {
+        let response = await fetch(
+          `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences`,
+          {
+            headers: {
+              Authorization: `Bearer ${this.props.bearer}`,
+            },
+          }
+        );
+        if (response.ok) {
+          let data = await response.json();
+          this.setState({ experiences: data });
+          console.log(this.state.experiences);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  deleteItem = async (id) => {
     try {
       let response = await fetch(
-        `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences`,
+        `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences/` +
+          id,
         {
+          method: "DELETE",
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
         }
       );
       if (response.ok) {
-        let data = await response.json();
-        this.setState({ experiences: data });
-        console.log(this.state.experiences);
+        alert("Experience deleted");
+        this.getExp();
+      } else {
+        alert("Error in the delete process");
       }
     } catch (error) {
       console.log(error);
@@ -117,6 +156,41 @@ class Profile extends React.Component {
           body: JSON.stringify(this.state.body),
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.ok) {
+        alert("Experiences ADDED");
+        this.getExp();
+        this.setState({
+          body: {
+            role: "",
+            company: "",
+            startDate: "",
+            endDate: "",
+            description: "",
+            area: "",
+          },
+        });
+      } else {
+        alert("You failed to add experiences");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  editExp = async (id) => {
+    try {
+      let response = await fetch(
+        `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences/` +
+          id,
+        {
+          method: "PUT",
+          body: JSON.stringify(this.state.body),
+          headers: {
+            Authorization: `Bearer ${this.props.bearer}`,
             "Content-Type": "application/json",
           },
         }
@@ -204,7 +278,8 @@ class Profile extends React.Component {
             <div className="Experiences">
               <div>
                 <Row>
-                  <Col className="alignToTheRight" xs={12}>
+                  <Col className="d-flex justify-content-between" xs={12}>
+                    <h5 className="mt-2 ml-3 font-weight-bold">Experiences</h5>
                     <img
                       onClick={() => this.handleShow()}
                       height={40}
@@ -216,7 +291,7 @@ class Profile extends React.Component {
               </div>
               {this.state.experiences.length > 0 &&
                 this.state.experiences.map((experience) => (
-                  <div>
+                  <div className="mt-3">
                     <Row>
                       <Col xs={5}>
                         <strong>{experience.company}</strong>
@@ -228,12 +303,16 @@ class Profile extends React.Component {
                             {moment(experience.startDate).format(
                               "MMMM Do YYYY"
                             )}
+                            {" - "}
                             {moment(experience.endDate).format("MMMM Do YYYY")}
                           </p>
                         </div>
                       </Col>
                       <Col xs={1}>
-                        <button>edit</button>
+                        <button onClick={() => this.handleShow()}>edit</button>
+                        <button onClick={() => this.deleteItem(experience._id)}>
+                          DELETE
+                        </button>
                       </Col>
                     </Row>
                   </div>
@@ -306,7 +385,7 @@ class Profile extends React.Component {
         </Row>
 
         <Modal show={this.state.show}>
-          <Modal.Header closeButton>
+          <Modal.Header>
             <Modal.Title>Add experience</Modal.Title>
           </Modal.Header>
           <Modal.Body>

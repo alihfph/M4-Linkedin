@@ -33,7 +33,7 @@
   background-color: rgb(228, 228, 228);
 }
 .Experiences {
-  position: relative;
+  /* position: relative; */
   transition: 0.25s ease;
   background-color: white;
   margin-top: 20px;
@@ -42,12 +42,12 @@
   align-items: center;
   border: 1px solid rgba(0, 0, 0, 0.125);
 }
-.Experiences > .row > .col-12 > img {
+/* .Experiences > .row > .col-12 > img {
   position: absolute;
   cursor: pointer;
   right: 15px;
   top: 10px;
-}
+} */
 .alignToTheRight {
   display: flex;
   justify-content: flex-end;
