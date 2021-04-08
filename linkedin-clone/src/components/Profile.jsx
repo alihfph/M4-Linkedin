@@ -52,8 +52,6 @@ class Profile extends React.Component {
         let allProfiles = await response.json();
         this.setState({ relatedProfiles: allProfiles.slice(95, 100) });
         this.setState({ suggestedProfiles: allProfiles.slice(100, 105) });
-        console.log(this.state.relatedProfiles);
-        console.log(this.state.suggestedProfiles);
       }
     } catch (error) {
       console.log(error);
@@ -118,11 +116,17 @@ class Profile extends React.Component {
   updateProPic = () => {
     this.setState({ imgModal: true });
   };
+  fetchDataAndShowModal = (id) => {
+    this.handleShow();
+    this.getExp(id);
+  };
+
   handleShow = () => {
     this.setState({ show: true });
   };
   onHide = () => {
     this.setState({ show: false });
+    this.setState({ body: {} });
   };
   postExp = async (e) => {
     e.preventDefault();
@@ -142,17 +146,10 @@ class Profile extends React.Component {
         alert("Experiences ADDED");
         this.getExp();
         this.setState({
-          body: {
-            role: "",
-            company: "",
-            startDate: "",
-            endDate: "",
-            description: "",
-            area: "",
-          },
+          body: {},
         });
       } else {
-        alert("You failed ");
+        alert("You failed your edit");
       }
     } catch (error) {
       console.log(error);
@@ -233,7 +230,7 @@ class Profile extends React.Component {
               </div>
               {this.state.experiences.length > 0 &&
                 this.state.experiences.map((experience) => (
-                  <div>
+                  <div className="mt-3" key={experience._id}>
                     <Row>
                       <Col xs={5}>
                         <strong>{experience.company}</strong>
@@ -250,7 +247,16 @@ class Profile extends React.Component {
                         </div>
                       </Col>
                       <Col xs={1}>
-                        <button>edit</button>
+                        <button
+                          onClick={() =>
+                            this.fetchDataAndShowModal(experience._id)
+                          }
+                        >
+                          Edit
+                        </button>
+                        <button onClick={() => this.deleteItem(experience._id)}>
+                          DELETE
+                        </button>
                       </Col>
                     </Row>
                   </div>
@@ -312,8 +318,16 @@ class Profile extends React.Component {
                   {this.state.suggestedProfiles.length > 0 &&
                     this.state.suggestedProfiles.map((user) => {
                       return (
-                        <div style={{ width: "299px" }} className="proPic">
-                          <img height={40} src={user.image} alt={user._id} />
+                        <div
+                          style={{ width: "299px" }}
+                          key={user._id}
+                          className="proPic"
+                        >
+                          <img
+                            height={40}
+                            src={user.image}
+                            alt="user profile image"
+                          />
                           <p>
                             {user.name} {user.surname}
                           </p>
@@ -426,6 +440,12 @@ class Profile extends React.Component {
             </Button>
             <Button variant="primary" onClick={(e) => this.postExp(e)}>
               Save Changes
+            </Button>
+            <Button
+              variant="primary"
+              onClick={() => this.editExp(this.state.body._id)}
+            >
+              Edit
             </Button>
           </Modal.Footer>
         </Modal>
