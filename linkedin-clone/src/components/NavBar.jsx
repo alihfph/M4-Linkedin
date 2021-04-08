@@ -7,7 +7,7 @@ import {
   FormControl,
   Container,
 } from "react-bootstrap";
-import {Link}
+import { Link } from "react-router-dom";
 
 export default class NavBar extends React.Component {
   render() {
@@ -33,13 +33,17 @@ export default class NavBar extends React.Component {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto">
-              <Nav.Link href="#home">Home</Nav.Link>
+              <Nav.Link as={Link} to="/">
+                Home
+              </Nav.Link>
               <Nav.Link href="#mynetwork">My Network</Nav.Link>
               <Nav.Link href="#jobs">Jobs</Nav.Link>
               <Nav.Link href="#messaging">Messaging</Nav.Link>
               <Nav.Link href="#notifications">Notifications</Nav.Link>
               <NavDropdown title="Me" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/user/me">
+                  {this.props.name + " " + this.props.surname}
+                </NavDropdown.Item>
                 <NavDropdown.Divider />
                 <h6 className="px-4 m-0 py-1 font-weight-bold">Account</h6>
                 <NavDropdown.Item href="#action/3.2">
@@ -57,7 +61,8 @@ export default class NavBar extends React.Component {
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item
-                  href="/register"
+                  as={Link}
+                  to="/register"
                   onClick={() => localStorage.clear()}
                 >
                   Sign Out

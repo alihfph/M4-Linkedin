@@ -55,10 +55,13 @@ class App extends React.Component {
   updateState = (subState) => {
     this.setState({ data: subState });
   };
+  componentDidMount() {
+    this.getActualUser();
+  }
   render() {
     return (
       <>
-        <NavBar />
+        <NavBar {...this.state.data} />
         <Route path="/user/:id" render={(props) => <Profile {...props} />} />
 
         <Route

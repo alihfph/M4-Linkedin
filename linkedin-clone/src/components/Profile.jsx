@@ -33,8 +33,9 @@ class Profile extends React.Component {
 
   componentDidMount = async () => {
     await this.fetchMe();
-    await this.getExp();
+
     await this.catchThemAll();
+    await this.getExp();
   };
 
   catchThemAll = async () => {
@@ -102,17 +103,17 @@ class Profile extends React.Component {
       console.log(error);
     }
   };
-  componentDidUpdate(prevProps) {
-    if (prevProps !== this.props) {
-      this.setState({ myProfile: [] });
-      this.fetchMe();
-      this.getExp();
-    }
-  }
+  // componentDidUpdate(prevProps) {
+  //   if (prevProps !== this.props) {
+  //     this.setState({ myProfile: [] });
+  //     this.fetchMe();
+  //     this.getExp();
+  //   }
+  // }
 
   handleProfile = (id) => {
-    this.props.history.push("/user/" + id);
-    // window.location.assign("/user/" + id); shortcut if u braindead
+    // this.props.history.push("/user/" + id);
+    window.location.assign("/user/" + id);
   };
   updateProPic = () => {
     this.setState({ imgModal: true });
