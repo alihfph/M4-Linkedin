@@ -1,4 +1,4 @@
-import { Form, Button, Container, Row, Col } from "react-bootstrap";
+import { Form} from "react-bootstrap";
 import React from "react";
 import "./styles/registration.css";
 export default class Registration extends React.Component {
@@ -55,12 +55,12 @@ export default class Registration extends React.Component {
   };
   render() {
     return (
-      <Container>
+     <div>
         <h1 className="text-center py-4">
           Make the most of your professional life
         </h1>
-        <Row>
-          <Col md={{ span: 4, offset: 4 }} className="pt-4">
+     
+            <div
             <Form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -79,6 +79,7 @@ export default class Registration extends React.Component {
                   value={this.props.name}
                   type="text"
                   placeholder="Name"
+                  required
                 />
               </Form.Group>
 
@@ -94,6 +95,7 @@ export default class Registration extends React.Component {
                   value={this.props.surname}
                   type="text"
                   placeholder="Surname"
+                  required
                 />
               </Form.Group>
 
@@ -109,6 +111,7 @@ export default class Registration extends React.Component {
                   value={this.props.email}
                   type="email"
                   placeholder="Enter email"
+                  required
                 />
                 <Form.Text className="text-muted">
                   We'll never share your email with anyone else.
@@ -126,6 +129,7 @@ export default class Registration extends React.Component {
                   }
                   value={this.props.username}
                   placeholder="Username"
+                  required
                 />
               </Form.Group>
 
@@ -141,6 +145,7 @@ export default class Registration extends React.Component {
                   value={this.props.password}
                   type="password"
                   placeholder="Password"
+                  required
                 />
               </Form.Group>
 
@@ -185,6 +190,7 @@ export default class Registration extends React.Component {
                   }
                   value={this.props.area}
                   placeholder="City, Region, Country"
+                  required
                 />
               </Form.Group>
 
@@ -195,9 +201,8 @@ export default class Registration extends React.Component {
                 Submit
               </button>
             </Form>
-          </Col>
-        </Row>
-      </Container>
+          
+      </div>
     );
   }
 }
