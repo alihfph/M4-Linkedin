@@ -24,7 +24,11 @@ class Feed extends React.Component {
                   src="https://coverfiles.alphacoders.com/372/37275.jpg"
                 />
                 <div className="proPicContainer">
-                  <img className="profPic" src={this.props.state.data.image} />
+                  <img
+                    onClick={() => this.props.history.push("/profile")}
+                    className="profPic"
+                    src={this.props.state.data.image}
+                  />
                   <h6>
                     {this.props.state.data.name} {this.props.state.data.surname}
                   </h6>

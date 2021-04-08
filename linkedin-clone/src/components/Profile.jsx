@@ -15,6 +15,7 @@ import "./styles/profile.css";
 
 class Profile extends React.Component {
   state = {
+    imgModal: false,
     show: false,
     myProfile: [],
     relatedProfiles: [],
@@ -97,7 +98,9 @@ class Profile extends React.Component {
       console.log(error);
     }
   };
-
+  updateProPic = () => {
+    this.setState({ imgModal: true });
+  };
   handleShow = () => {
     this.setState({ show: true });
   };
@@ -155,6 +158,7 @@ class Profile extends React.Component {
                 <div>
                   <div style={{ marginTop: "-130px" }}>
                     <img
+                      onClick={this.updateProPic}
                       src={
                         this.state.myProfile.image
                           ? this.state.myProfile.image
@@ -404,6 +408,7 @@ class Profile extends React.Component {
             </Button>
           </Modal.Footer>
         </Modal>
+        <div imgModal={this.state.imgModal}></div>
       </Container>
     );
   }
