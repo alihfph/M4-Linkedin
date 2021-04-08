@@ -28,6 +28,9 @@ export default class Registration extends React.Component {
       );
       if (response.ok) {
         const res = await response.json();
+        const access_token = await res.access_token;
+        localStorage.setItem("token", access_token);
+
         alert("Registration was successful!");
         this.setState({
           area: "",
@@ -42,7 +45,7 @@ export default class Registration extends React.Component {
           username: "",
         });
         this.props.setState2(res.access_token);
-        console.log(res);
+        this.props.history.push("/feed");
       } else {
         alert("ERROR!");
       }

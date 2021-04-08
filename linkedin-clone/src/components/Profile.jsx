@@ -42,7 +42,7 @@ class Profile extends React.Component {
         "https://striveschool-api.herokuapp.com/api/profile/",
         {
           headers: {
-            Authorization: `Bearer ${this.props.bearer}`,
+            Authorization: "Bearer " + localStorage.getItem("token"),
           },
         }
       );
@@ -64,7 +64,7 @@ class Profile extends React.Component {
         "https://striveschool-api.herokuapp.com/api/profile/me",
         {
           headers: {
-            Authorization: `Bearer ${this.props.bearer}`,
+            Authorization: "Bearer " + localStorage.getItem("token"),
           },
         }
       );
@@ -84,7 +84,7 @@ class Profile extends React.Component {
         `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences`,
         {
           headers: {
-            Authorization: `Bearer ${this.props.bearer}`,
+            Authorization: "Bearer " + localStorage.getItem("token"),
           },
         }
       );
@@ -113,7 +113,7 @@ class Profile extends React.Component {
           method: "POST",
           body: JSON.stringify(this.state.body),
           headers: {
-            Authorization: `Bearer ${this.props.bearer}`,
+            Authorization: "Bearer " + localStorage.getItem("token"),
             "Content-Type": "application/json",
           },
         }
@@ -155,7 +155,11 @@ class Profile extends React.Component {
                 <div>
                   <div style={{ marginTop: "-130px" }}>
                     <img
-                      src={this.state.myProfile.image}
+                      src={
+                        this.state.myProfile.image
+                          ? this.state.myProfile.image
+                          : "https://mir-s3-cdn-cf.behance.net/project_modules/disp/afb8cb36197347.5713616457ee5.gif"
+                      }
                       alt="placeholder"
                       height="160px"
                       width="160px"
@@ -270,7 +274,6 @@ class Profile extends React.Component {
                     })}
                 </ListGroup>
               </div>
-              );
             </div>
             <div
               style={{
@@ -294,7 +297,6 @@ class Profile extends React.Component {
                     })}
                 </ListGroup>
               </div>
-              );
             </div>
           </Col>
         </Row>

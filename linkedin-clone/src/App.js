@@ -6,6 +6,7 @@ import Profile from "./components/Profile";
 import Registration from "./components/Registrationpage";
 import Login from "./components/LoginPage";
 import React from "react";
+import Feed from "./components/Feed";
 
 class App extends React.Component {
   state = {
@@ -39,7 +40,7 @@ class App extends React.Component {
           <NavBar />
           <Profile bearer={this.state.bearer} />
         </Route>
-
+        <Route exact path="/feed" render={(props) => <Feed {...props} />} />
         <Route
           exact
           path="/register"
@@ -52,9 +53,7 @@ class App extends React.Component {
             />
           )}
         />
-        <Route path="/login">
-          <Login />
-        </Route>
+        <Route exact path="/login" render={(props) => <Login {...props} />} />
       </>
     );
   }
