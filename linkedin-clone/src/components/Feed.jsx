@@ -3,6 +3,7 @@ import { Col, Container, Row, Card } from "react-bootstrap";
 import Adv from "./Adv";
 import PostMaker from "./PostMaker";
 import ContentLoader, { Facebook } from "react-content-loader";
+import toast, { Toaster } from "react-hot-toast";
 import "./styles/feed.css";
 class Feed extends React.Component {
   state = {
@@ -15,7 +16,6 @@ class Feed extends React.Component {
   };
   // https: //striveschool-api.herokuapp.com/api/posts/
   getPosts = async () => {
-    console.log("getting posts");
     try {
       let response = await fetch(
         "https://striveschool-api.herokuapp.com/api/posts/",
@@ -27,7 +27,7 @@ class Feed extends React.Component {
       );
       if (response.ok) {
         let data = await response.json();
-        this.setState({ posts: data });
+        this.setState({ posts: data.slice(350, 450) });
         console.log(this.state.posts);
       }
     } catch (error) {
@@ -79,17 +79,11 @@ class Feed extends React.Component {
             </Col>
             <Col xs={6}>
               <PostMaker />
-              {this.MyFacebookLoader()}
-              {this.MyFacebookLoader()}
-              {this.MyFacebookLoader()}
-              {this.MyFacebookLoader()}
-              {this.MyFacebookLoader()}
-              {this.MyFacebookLoader()}
-              {this.MyFacebookLoader()}
-              {this.MyFacebookLoader()}
-              {this.MyFacebookLoader()}
-              {this.MyFacebookLoader()}
-              {this.MyFacebookLoader()}
+              {this.state.posts
+                ? this.state.posts.map((post) => {
+                    return <div>{post.text}</div>;
+                  })
+                : this.MyFacebookLoader()}
             </Col>
             <Col className="d-none d-xl-block" xs={3}>
               <Adv />

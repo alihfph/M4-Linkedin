@@ -5,7 +5,7 @@ class PostMaker extends React.Component {
   render() {
     return (
       <div style={{ minHeight: "10vh", backgroundColor: "white" }}>
-        container for the posts
+        /coming soon
       </div>
     );
   }

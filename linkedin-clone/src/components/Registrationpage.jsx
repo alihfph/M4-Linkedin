@@ -188,13 +188,12 @@ export default class Registration extends React.Component {
                 />
               </Form.Group>
 
-              <Button
-                variant="primary"
+              <button
                 type="submit"
                 onClick={() => this.props.setState(this.state)}
               >
                 Submit
-              </Button>
+              </button>
             </Form>
           </Col>
         </Row>
