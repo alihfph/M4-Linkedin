@@ -130,7 +130,7 @@ class Profile extends React.Component {
         alert("Experience deleted");
         this.getExp();
       } else {
-        alert("Error in delete process");
+        alert("Error in the delete process");
       }
     } catch (error) {
       console.log(error);
@@ -171,7 +171,7 @@ class Profile extends React.Component {
           },
         });
       } else {
-        alert("You failed ");
+        alert("You failed to add experiences");
       }
     } catch (error) {
       console.log(error);
@@ -348,7 +348,6 @@ class Profile extends React.Component {
                     })}
                 </ListGroup>
               </div>
-              );
             </div>
             <div
               style={{
@@ -372,7 +371,6 @@ class Profile extends React.Component {
                     })}
                 </ListGroup>
               </div>
-              );
             </div>
           </Col>
         </Row>
