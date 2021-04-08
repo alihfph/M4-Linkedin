@@ -50,8 +50,6 @@ class Profile extends React.Component {
         let allProfiles = await response.json();
         this.setState({ relatedProfiles: allProfiles.slice(95, 100) });
         this.setState({ suggestedProfiles: allProfiles.slice(100, 105) });
-        console.log(this.state.relatedProfiles);
-        console.log(this.state.suggestedProfiles);
       }
     } catch (error) {
       console.log(error);
@@ -97,7 +95,6 @@ class Profile extends React.Component {
           this.setState({
             body: data,
           });
-          console.log(data);
           console.log(this.state.body);
         }
       } else {
@@ -153,6 +150,7 @@ class Profile extends React.Component {
   };
   onHide = () => {
     this.setState({ show: false });
+    this.setState({ body: {} });
   };
   postExp = async (e) => {
     e.preventDefault();
@@ -207,14 +205,7 @@ class Profile extends React.Component {
         alert("Experiences ADDED");
         this.getExp();
         this.setState({
-          body: {
-            role: "",
-            company: "",
-            startDate: "",
-            endDate: "",
-            description: "",
-            area: "",
-          },
+          body: {},
         });
       } else {
         alert("You failed your edit");
@@ -512,7 +503,7 @@ class Profile extends React.Component {
             </Button>
             <Button
               variant="primary"
-              onClick={(e) => this.editExp(this.state.body._id)}
+              onClick={() => this.editExp(this.state.body._id)}
             >
               Edit
             </Button>
