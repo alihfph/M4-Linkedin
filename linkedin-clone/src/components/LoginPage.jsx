@@ -23,13 +23,15 @@ export default class Login extends React.Component {
         const access_token = await res.access_token;
 
         localStorage.setItem("token", access_token);
-        this.props.history.push("/feed");
+
         alert("logged in successfully!");
+
         this.setState({
           password: "",
           username: "",
         });
-
+        console.log(this.props.history);
+        this.props.access();
         console.log(res);
       } else {
         alert("ERROR!");

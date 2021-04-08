@@ -24,11 +24,33 @@ class App extends React.Component {
       username: "",
     },
   };
+  getActualUser = async () => {
+    try {
+      let response = await fetch(
+        "https://striveschool-api.herokuapp.com/api/profile/me",
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
+      if (response.ok) {
+        let myProfile = await response.json();
+        this.setState({ data: myProfile });
+        console.log(this.state.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   updateBearer = (hi2) => {
     this.setState({ bearer: hi2 });
     if (this.state.bearer !== "") {
       this.props.history.push("/");
     }
+  };
+  access = () => {
+    this.props.history.push("/");
   };
   updateState = (subState) => {
     this.setState({ data: subState });
@@ -36,11 +58,17 @@ class App extends React.Component {
   render() {
     return (
       <>
-        <Route exact path="/">
+        <Route exact path="/profile">
           <NavBar />
           <Profile bearer={this.state.bearer} />
         </Route>
-        <Route exact path="/feed" render={(props) => <Feed {...props} />} />
+        <Route
+          exact
+          path="/"
+          render={(props) => (
+            <Feed {...props} state={this.state} fetch={this.getActualUser} />
+          )}
+        />
         <Route
           exact
           path="/register"
@@ -53,7 +81,11 @@ class App extends React.Component {
             />
           )}
         />
-        <Route exact path="/login" render={(props) => <Login {...props} />} />
+        <Route
+          exact
+          path="/login"
+          render={(props) => <Login access={this.access} {...props} />}
+        />
       </>
     );
   }

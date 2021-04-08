@@ -1,0 +1,41 @@
+.col-md-2 {
+  width: 35% !important;
+}
+.profPic {
+  border: 3px solid rgb(255, 255, 255);
+  height: 75px;
+  width: 75px;
+  border-radius: 50%;
+  box-shadow: inset 0px 0px 20px 20px white;
+}
+.proPicContainer:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+.proPicContainer {
+  margin-top: -30px;
+
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.sidebarInfo {
+  margin-top: -5vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.sidebar {
+  width: 216px;
+  border-radius: 10px !important;
+}
+.sidebar > .card-img-top {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.noPadding {
+  padding: ;
+}
