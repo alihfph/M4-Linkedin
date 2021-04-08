@@ -78,20 +78,36 @@ class Profile extends React.Component {
     }
   };
 
-  getExp = async () => {
+  getExp = async (id) => {
     try {
-      let response = await fetch(
-        `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences`,
-        {
-          headers: {
-            Authorization: `Bearer ${this.props.bearer}`,
-          },
+      if (id) {
+        let response = await fetch(
+          `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences/` +
+            id,
+          {
+            headers: {
+              Authorization: `Bearer ${this.props.bearer}`,
+            },
+          }
+        );
+        if (response.ok) {
+          let data = await response.json();
+          this.setState({ experiences: data });
         }
-      );
-      if (response.ok) {
-        let data = await response.json();
-        this.setState({ experiences: data });
-        console.log(this.state.experiences);
+      } else {
+        let response = await fetch(
+          `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences`,
+          {
+            headers: {
+              Authorization: `Bearer ${this.props.bearer}`,
+            },
+          }
+        );
+        if (response.ok) {
+          let data = await response.json();
+          this.setState({ experiences: data });
+          console.log(this.state.experiences);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -134,6 +150,41 @@ class Profile extends React.Component {
         `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences`,
         {
           method: "POST",
+          body: JSON.stringify(this.state.body),
+          headers: {
+            Authorization: `Bearer ${this.props.bearer}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.ok) {
+        alert("Experiences ADDED");
+        this.getExp();
+        this.setState({
+          body: {
+            role: "",
+            company: "",
+            startDate: "",
+            endDate: "",
+            description: "",
+            area: "",
+          },
+        });
+      } else {
+        alert("You failed ");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  editExp = async (id) => {
+    try {
+      let response = await fetch(
+        `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences/` +
+          id,
+        {
+          method: "PUT",
           body: JSON.stringify(this.state.body),
           headers: {
             Authorization: `Bearer ${this.props.bearer}`,
@@ -219,7 +270,8 @@ class Profile extends React.Component {
             <div className="Experiences">
               <div>
                 <Row>
-                  <Col className="alignToTheRight" xs={12}>
+                  <Col className="d-flex justify-content-between" xs={12}>
+                    <h5 className="mt-2 ml-3 font-weight-bold">Experiences</h5>
                     <img
                       onClick={() => this.handleShow()}
                       height={40}
@@ -231,7 +283,7 @@ class Profile extends React.Component {
               </div>
               {this.state.experiences.length > 0 &&
                 this.state.experiences.map((experience) => (
-                  <div>
+                  <div className="mt-3">
                     <Row>
                       <Col xs={5}>
                         <strong>{experience.company}</strong>
@@ -326,7 +378,7 @@ class Profile extends React.Component {
         </Row>
 
         <Modal show={this.state.show}>
-          <Modal.Header closeButton>
+          <Modal.Header>
             <Modal.Title>Add experience</Modal.Title>
           </Modal.Header>
           <Modal.Body>
