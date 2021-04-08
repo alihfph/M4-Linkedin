@@ -295,6 +295,7 @@ class Profile extends React.Component {
                             {moment(experience.startDate).format(
                               "MMMM Do YYYY"
                             )}
+                            {" - "}
                             {moment(experience.endDate).format("MMMM Do YYYY")}
                           </p>
                         </div>
