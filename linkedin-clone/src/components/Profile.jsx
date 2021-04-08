@@ -98,6 +98,29 @@ class Profile extends React.Component {
     }
   };
 
+  deleteItem = async (id) => {
+    try {
+      let response = await fetch(
+        `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences/` +
+          id,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${this.props.bearer}`,
+          },
+        }
+      );
+      if (response.ok) {
+        alert("Experience deleted");
+        this.getExp();
+      } else {
+        alert("Error in delete process");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   handleShow = () => {
     this.setState({ show: true });
   };
@@ -225,7 +248,10 @@ class Profile extends React.Component {
                         </div>
                       </Col>
                       <Col xs={1}>
-                        <button>edit</button>
+                        <button onClick={() => this.handleShow()}>edit</button>
+                        <button onClick={() => this.deleteItem(experience._id)}>
+                          DELETE
+                        </button>
                       </Col>
                     </Row>
                   </div>
