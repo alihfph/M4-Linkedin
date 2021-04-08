@@ -37,7 +37,60 @@ class Profile extends React.Component {
     await this.catchThemAll();
     await this.getExp();
   };
+  fetchDataAndShowModal = (id) => {
+    this.handleShow();
+    this.getExp(id);
+  };
 
+  editExp = async (id) => {
+    try {
+      let response = await fetch(
+        `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences/` +
+          id,
+        {
+          method: "PUT",
+          body: JSON.stringify(this.state.body),
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.ok) {
+        alert("Experiences ADDED");
+        this.getExp();
+        this.setState({
+          body: {},
+        });
+      } else {
+        alert("You failed your edit");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  deleteItem = async (id) => {
+    try {
+      let response = await fetch(
+        `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences/` +
+          id,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
+      if (response.ok) {
+        alert("Experience deleted");
+        this.getExp();
+      } else {
+        alert("Error in the delete process");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   catchThemAll = async () => {
     try {
       let response = await fetch(
@@ -82,20 +135,41 @@ class Profile extends React.Component {
     }
   };
 
-  getExp = async () => {
+  getExp = async (id) => {
     try {
-      let response = await fetch(
-        `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences`,
-        {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
+      if (id) {
+        let response = await fetch(
+          `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences/` +
+            id,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        );
+        if (response.ok) {
+          let data = await response.json();
+          // this.setState({ experiences: data });
+
+          this.setState({
+            body: data,
+          });
+          console.log(this.state.body);
         }
-      );
-      if (response.ok) {
-        let data = await response.json();
-        this.setState({ experiences: data });
-        console.log(this.state.experiences);
+      } else {
+        let response = await fetch(
+          `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences`,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        );
+        if (response.ok) {
+          let data = await response.json();
+          this.setState({ experiences: data });
+          console.log(this.state.experiences);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -341,8 +415,10 @@ class Profile extends React.Component {
         </Row>
 
         <Modal show={this.state.show}>
-          <Modal.Header closeButton>
-            <Modal.Title>Add experience</Modal.Title>
+          <Modal.Header closeButton={this.onHide}>
+            <Modal.Title>
+              {this.state.body._id ? "Edit " : "Add "}experience
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form
@@ -438,15 +514,23 @@ class Profile extends React.Component {
             <Button variant="secondary" onClick={() => this.onHide()}>
               Close
             </Button>
-            <Button variant="primary" onClick={(e) => this.postExp(e)}>
-              Save Changes
-            </Button>
-            <Button
-              variant="primary"
-              onClick={() => this.editExp(this.state.body._id)}
-            >
-              Edit
-            </Button>
+            {this.state.body._id ? (
+              <div></div>
+            ) : (
+              <Button variant="primary" onClick={(e) => this.postExp(e)}>
+                Save Changes
+              </Button>
+            )}
+            {this.state.body._id ? (
+              <Button
+                variant="primary"
+                onClick={() => this.editExp(this.state.body._id)}
+              >
+                Edit
+              </Button>
+            ) : (
+              <div></div>
+            )}
           </Modal.Footer>
         </Modal>
         <div imgModal={this.state.imgModal}></div>
