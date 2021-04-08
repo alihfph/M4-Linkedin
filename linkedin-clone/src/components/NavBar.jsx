@@ -7,10 +7,16 @@ import {
   FormControl,
   Container,
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import {Link}
 
 export default class NavBar extends React.Component {
   render() {
+    if (
+      window.location.pathname.includes("register") ||
+      window.location.pathname.includes("login")
+    ) {
+      return <div></div>;
+    }
     return (
       <Navbar style={{ backgroundColor: "white" }} expand="lg" className="py-0">
         <Container>
