@@ -1,6 +1,6 @@
 import React from "react";
 import { Col, Container, Row, Card } from "react-bootstrap";
-import NavBar from "./NavBar";
+
 import "./styles/feed.css";
 class Feed extends React.Component {
   handleLogout = () => {
@@ -14,7 +14,6 @@ class Feed extends React.Component {
   render() {
     return (
       <>
-        <NavBar />
         <Container>
           <Row style={{ marginTop: "5vh" }}>
             <Col xs={2} md={3}>

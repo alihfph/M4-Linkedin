@@ -60,15 +60,19 @@ class Profile extends React.Component {
   };
 
   fetchMe = async () => {
+    const url =
+      "https://striveschool-api.herokuapp.com/api/profile/" +
+      this.props.match.params.id;
+    // const url =
+    //   this.props.match.params.id === "me"
+    //     ? "https://striveschool-api.herokuapp.com/api/profile/me"
+    //     : "https://striveschool-api.herokuapp.com/api/profile/"+this.props.match.params.id;
     try {
-      let response = await fetch(
-        "https://striveschool-api.herokuapp.com/api/profile/me",
-        {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        }
-      );
+      let response = await fetch(url, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
       if (response.ok) {
         let myProfile = await response.json();
         this.setState({ myProfile });
@@ -79,63 +83,36 @@ class Profile extends React.Component {
     }
   };
 
-  getExp = async (id) => {
-    try {
-      if (id) {
-        let response = await fetch(
-          `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences/` +
-            id,
-          {
-            headers: {
-              Authorization: `Bearer ${this.props.bearer}`,
-            },
-          }
-        );
-        if (response.ok) {
-          let data = await response.json();
-          this.setState({ experiences: data });
-        }
-      } else {
-        let response = await fetch(
-          `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences`,
-          {
-            headers: {
-              Authorization: `Bearer ${this.props.bearer}`,
-            },
-          }
-        );
-        if (response.ok) {
-          let data = await response.json();
-          this.setState({ experiences: data });
-          console.log(this.state.experiences);
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  deleteItem = async (id) => {
+  getExp = async () => {
     try {
       let response = await fetch(
-        `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences/` +
-          id,
+        `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences`,
         {
-          method: "DELETE",
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
         }
       );
       if (response.ok) {
-        alert("Experience deleted");
-        this.getExp();
-      } else {
-        alert("Error in the delete process");
+        let data = await response.json();
+        this.setState({ experiences: data });
+        console.log(this.state.experiences);
       }
     } catch (error) {
       console.log(error);
     }
+  };
+  componentDidUpdate(prevProps) {
+    if (prevProps !== this.props) {
+      this.setState({ myProfile: [] });
+      this.fetchMe();
+      this.getExp();
+    }
+  }
+
+  handleProfile = (id) => {
+    this.props.history.push("/user/" + id);
+    // window.location.assign("/user/" + id); shortcut if u braindead
   };
   updateProPic = () => {
     this.setState({ imgModal: true });
@@ -156,41 +133,6 @@ class Profile extends React.Component {
           body: JSON.stringify(this.state.body),
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (response.ok) {
-        alert("Experiences ADDED");
-        this.getExp();
-        this.setState({
-          body: {
-            role: "",
-            company: "",
-            startDate: "",
-            endDate: "",
-            description: "",
-            area: "",
-          },
-        });
-      } else {
-        alert("You failed to add experiences");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  editExp = async (id) => {
-    try {
-      let response = await fetch(
-        `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences/` +
-          id,
-        {
-          method: "PUT",
-          body: JSON.stringify(this.state.body),
-          headers: {
-            Authorization: `Bearer ${this.props.bearer}`,
             "Content-Type": "application/json",
           },
         }
@@ -278,8 +220,7 @@ class Profile extends React.Component {
             <div className="Experiences">
               <div>
                 <Row>
-                  <Col className="d-flex justify-content-between" xs={12}>
-                    <h5 className="mt-2 ml-3 font-weight-bold">Experiences</h5>
+                  <Col className="alignToTheRight" xs={12}>
                     <img
                       onClick={() => this.handleShow()}
                       height={40}
@@ -291,7 +232,7 @@ class Profile extends React.Component {
               </div>
               {this.state.experiences.length > 0 &&
                 this.state.experiences.map((experience) => (
-                  <div className="mt-3">
+                  <div>
                     <Row>
                       <Col xs={5}>
                         <strong>{experience.company}</strong>
@@ -303,16 +244,12 @@ class Profile extends React.Component {
                             {moment(experience.startDate).format(
                               "MMMM Do YYYY"
                             )}
-                            {" - "}
                             {moment(experience.endDate).format("MMMM Do YYYY")}
                           </p>
                         </div>
                       </Col>
                       <Col xs={1}>
-                        <button onClick={() => this.handleShow()}>edit</button>
-                        <button onClick={() => this.deleteItem(experience._id)}>
-                          DELETE
-                        </button>
+                        <button>edit</button>
                       </Col>
                     </Row>
                   </div>
@@ -347,7 +284,11 @@ class Profile extends React.Component {
                   {this.state.relatedProfiles.length > 0 &&
                     this.state.relatedProfiles.map((user) => {
                       return (
-                        <div style={{ width: "299px" }} className="proPic">
+                        <div
+                          onClick={() => this.handleProfile(user._id)}
+                          style={{ width: "299px" }}
+                          className="proPic"
+                        >
                           <img height={40} src={user.image} alt={user._id} />
                           <p>
                             {user.name} {user.surname}
@@ -385,7 +326,7 @@ class Profile extends React.Component {
         </Row>
 
         <Modal show={this.state.show}>
-          <Modal.Header>
+          <Modal.Header closeButton>
             <Modal.Title>Add experience</Modal.Title>
           </Modal.Header>
           <Modal.Body>

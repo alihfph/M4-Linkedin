@@ -58,10 +58,9 @@ class App extends React.Component {
   render() {
     return (
       <>
-        <Route exact path="/profile">
-          <NavBar />
-          <Profile bearer={this.state.bearer} />
-        </Route>
+        <NavBar />
+        <Route path="/user/:id" render={(props) => <Profile {...props} />} />
+
         <Route
           exact
           path="/"
