@@ -92,7 +92,13 @@ class Profile extends React.Component {
         );
         if (response.ok) {
           let data = await response.json();
-          this.setState({ experiences: data });
+          // this.setState({ experiences: data });
+
+          this.setState({
+            body: data,
+          });
+          console.log(data);
+          console.log(this.state.body);
         }
       } else {
         let response = await fetch(
@@ -135,6 +141,11 @@ class Profile extends React.Component {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  fetchDataAndShowModal = (id) => {
+    this.handleShow();
+    this.getExp(id);
   };
 
   handleShow = () => {
@@ -206,7 +217,7 @@ class Profile extends React.Component {
           },
         });
       } else {
-        alert("You failed ");
+        alert("You failed your edit");
       }
     } catch (error) {
       console.log(error);
@@ -283,7 +294,7 @@ class Profile extends React.Component {
               </div>
               {this.state.experiences.length > 0 &&
                 this.state.experiences.map((experience) => (
-                  <div className="mt-3">
+                  <div className="mt-3" key={experience._id}>
                     <Row>
                       <Col xs={5}>
                         <strong>{experience.company}</strong>
@@ -301,7 +312,13 @@ class Profile extends React.Component {
                         </div>
                       </Col>
                       <Col xs={1}>
-                        <button onClick={() => this.handleShow()}>edit</button>
+                        <button
+                          onClick={() =>
+                            this.fetchDataAndShowModal(experience._id)
+                          }
+                        >
+                          Edit
+                        </button>
                         <button onClick={() => this.deleteItem(experience._id)}>
                           DELETE
                         </button>
@@ -339,8 +356,16 @@ class Profile extends React.Component {
                   {this.state.relatedProfiles.length > 0 &&
                     this.state.relatedProfiles.map((user) => {
                       return (
-                        <div style={{ width: "299px" }} className="proPic">
-                          <img height={40} src={user.image} alt={user._id} />
+                        <div
+                          style={{ width: "299px" }}
+                          key={user._id}
+                          className="proPic"
+                        >
+                          <img
+                            height={40}
+                            src={user.image}
+                            alt="user profile image"
+                          />
                           <p>
                             {user.name} {user.surname}
                           </p>
@@ -362,8 +387,16 @@ class Profile extends React.Component {
                   {this.state.suggestedProfiles.length > 0 &&
                     this.state.suggestedProfiles.map((user) => {
                       return (
-                        <div style={{ width: "299px" }} className="proPic">
-                          <img height={40} src={user.image} alt={user._id} />
+                        <div
+                          style={{ width: "299px" }}
+                          key={user._id}
+                          className="proPic"
+                        >
+                          <img
+                            height={40}
+                            src={user.image}
+                            alt="user profile image"
+                          />
                           <p>
                             {user.name} {user.surname}
                           </p>
@@ -476,6 +509,12 @@ class Profile extends React.Component {
             </Button>
             <Button variant="primary" onClick={(e) => this.postExp(e)}>
               Save Changes
+            </Button>
+            <Button
+              variant="primary"
+              onClick={(e) => this.editExp(this.state.body._id)}
+            >
+              Edit
             </Button>
           </Modal.Footer>
         </Modal>
