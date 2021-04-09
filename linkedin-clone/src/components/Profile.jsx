@@ -71,7 +71,7 @@ class Profile extends React.Component {
         }
       );
       if (response.ok) {
-        alert("Experiences ADDED");
+        alert("Experiences edited");
         this.getExp();
         this.setState({
           body: {},
@@ -563,7 +563,12 @@ class Profile extends React.Component {
               </Form.Group>
               <Form.Group>
                 <Form.File
-                  onChange={(e) => this.setState({ file: e.target.files[0] })}
+                  onChange={(e) =>
+                    this.setState({
+                      ...this.state.file,
+                      file: e.target.files[0],
+                    })
+                  }
                   id="image upload"
                   label="Upload image"
                 />
