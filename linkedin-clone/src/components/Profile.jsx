@@ -19,6 +19,7 @@ class Profile extends React.Component {
   state = {
     imgModal: false,
     show: false,
+    file: null,
     myProfile: [],
     relatedProfiles: [],
     suggestedProfiles: [],
@@ -188,6 +189,38 @@ class Profile extends React.Component {
       console.log(error);
     }
   };
+
+  uploadExpPic = async (id) => {
+    console.log(this.state.file);
+    if (this.state.file === null) {
+      console.log("No image or file added");
+    } else {
+      let image = new FormData();
+      image.append("experience", this.state.file);
+
+      try {
+        const response = await fetch(
+          `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences/${id}/picture`,
+          {
+            method: "POST",
+            body: image,
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        );
+        if (response.ok) {
+          console.log("Experience pic added");
+          this.setState({ file: null });
+        } else {
+          console.log("Error while adding the pic");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   // componentDidUpdate(prevProps) {
   //   if (prevProps !== this.props) {
   //     this.setState({ myProfile: [] });
@@ -206,6 +239,10 @@ class Profile extends React.Component {
   fetchDataAndShowModal = (id) => {
     this.handleShow();
     this.getExp(id);
+  };
+  sendingEditedExpAndPic = (id) => {
+    this.editExp(id);
+    this.uploadExpPic(id);
   };
 
   handleShow = () => {
@@ -321,10 +358,7 @@ class Profile extends React.Component {
                 this.state.experiences.map((experience) => (
                   <div className="mt-3 " key={experience._id}>
                     <div className="experienceContainer rope">
-                      <img
-                        src="https://lh3.googleusercontent.com/DK8s-1rXnnhgrZiHvgDmova7Ru4JdNw_uIgY8r4FiwT99bRBrn6kuWmNcYOBw8yNxvKs6GQ=s85"
-                        alt={experience._id}
-                      />
+                      <img src={experience.image} alt="No pic added" />
                       <div>
                         <div className="stick">
                           <strong>{experience.company}</strong>
@@ -445,12 +479,7 @@ class Profile extends React.Component {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form
-              onSubmit={(e) => {
-                e.preventDefault();
-                this.postExp();
-              }}
-            >
+            <Form>
               <Form.Group>
                 <Form.Label>Role</Form.Label>
                 <Form.Control
@@ -532,6 +561,13 @@ class Profile extends React.Component {
                   placeholder="area"
                 />
               </Form.Group>
+              <Form.Group>
+                <Form.File
+                  onChange={(e) => this.setState({ file: e.target.files[0] })}
+                  id="image upload"
+                  label="Upload image"
+                />
+              </Form.Group>
             </Form>
           </Modal.Body>
           <Modal.Footer>
@@ -548,7 +584,7 @@ class Profile extends React.Component {
             {this.state.body._id ? (
               <Button
                 variant="primary"
-                onClick={() => this.editExp(this.state.body._id)}
+                onClick={() => this.sendingEditedExpAndPic(this.state.body._id)}
               >
                 Edit
               </Button>
