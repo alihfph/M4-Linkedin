@@ -2,6 +2,7 @@ import { Form, Button, Container } from "react-bootstrap";
 import React from "react";
 import toast, { Toaster } from "react-hot-toast";
 import "./styles/login.css";
+import { Link } from "react-router-dom";
 export default class Login extends React.Component {
   state = {
     password: "",
@@ -83,6 +84,11 @@ export default class Login extends React.Component {
           <button className="loginButton" onClick={this.logUser}>
             Sign in
           </button>
+          <div className="linkWrap">
+            <Link className="link" to="/register">
+              Create an account
+            </Link>
+          </div>
         </div>
         <Toaster
           position="top-right"
@@ -99,6 +105,12 @@ export default class Login extends React.Component {
             duration: 5000,
             // Default options for specific types
           }}
+        />
+
+        <img
+          draggable="false"
+          className="logoIn"
+          src="https://www.shareicon.net/data/512x512/2016/07/08/117028_media_512x512.png"
         />
       </div>
     );

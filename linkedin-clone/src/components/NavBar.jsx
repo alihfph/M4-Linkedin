@@ -62,7 +62,7 @@ export default class NavBar extends React.Component {
                 <NavDropdown.Divider />
                 <NavDropdown.Item
                   as={Link}
-                  to="/register"
+                  to="/login"
                   onClick={() => localStorage.clear()}
                 >
                   Sign Out

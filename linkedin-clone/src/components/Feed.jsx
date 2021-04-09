@@ -4,10 +4,12 @@ import Adv from "./Adv";
 import PostMaker from "./PostMaker";
 import ContentLoader, { Facebook } from "react-content-loader";
 import toast, { Toaster } from "react-hot-toast";
+
 import "./styles/feed.css";
 class Feed extends React.Component {
   state = {
     posts: [],
+    fakeposts: ["", "", "", "", ""],
   };
   MyFacebookLoader = () => <Facebook />;
   handleLogout = () => {
@@ -27,7 +29,9 @@ class Feed extends React.Component {
       );
       if (response.ok) {
         let data = await response.json();
-        this.setState({ posts: data.slice(350, 450) });
+        this.setState({
+          posts: data.filter((post) => post.user).slice(440, 450),
+        });
         console.log(this.state.posts);
       }
     } catch (error) {
@@ -79,11 +83,36 @@ class Feed extends React.Component {
             </Col>
             <Col xs={6}>
               <PostMaker />
-              {this.state.posts
-                ? this.state.posts.map((post) => {
-                    return <div>{post.text}</div>;
-                  })
-                : this.MyFacebookLoader()}
+
+              {!this.state.posts
+                ? this.state.fakeposts.map((post) => (
+                    <>{post + this.MyFacebookLoader()}</>
+                  ))
+                : this.state.posts.map((post) => {
+                    return (
+                      <div className="postCard">
+                        <div className="rope">
+                          <img
+                            className="avatar"
+                            src={
+                              post.user
+                                ? post.user.image
+                                : "https://www.sunchem.nl/wp-content/uploads/H_About/Teamphotos/profile-placeholder.jpg"
+                            }
+                          />
+                          <div className="userTag">
+                            <h4>{post.user.name + " " + post.user.surname} </h4>
+                            <p className="text-muted">{"@" + post.username}</p>
+                          </div>
+                          {post.text && post.text}
+                          <br />
+                          {post.image && (
+                            <img alt={post._id} src={post.image} height={200} />
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
             </Col>
             <Col className="d-none d-xl-block" xs={3}>
               <Adv />

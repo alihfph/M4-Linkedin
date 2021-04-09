@@ -78,6 +78,7 @@ class App extends React.Component {
             <Registration
               {...props}
               {...this.state}
+              access={this.access}
               setState={this.updateState}
               setState2={this.updateBearer}
             />
