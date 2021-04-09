@@ -30,8 +30,9 @@ class Feed extends React.Component {
       if (response.ok) {
         let data = await response.json();
         this.setState({
-          posts: data.filter((post) => post.user).slice(440, 450),
+          posts: data.filter((post) => post.user).slice(460, 480),
         });
+        // console.log(data);
         console.log(this.state.posts);
       }
     } catch (error) {

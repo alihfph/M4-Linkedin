@@ -20,7 +20,7 @@ export default class NavBar extends React.Component {
     return (
       <Navbar style={{ backgroundColor: "white" }} expand="lg" className="py-0">
         <Container>
-          <Navbar.Brand href="#home">
+          <Navbar.Brand as={Link} to="/">
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Linkedin_icon.svg/240px-Linkedin_icon.svg.png"
               alt="LinkInIcon"
