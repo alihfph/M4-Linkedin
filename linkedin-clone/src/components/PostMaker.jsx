@@ -6,6 +6,7 @@ class PostMaker extends React.Component {
     posts: [],
     post: {
       text: "",
+      image: "",
     },
     image: null,
   };
