@@ -22,6 +22,7 @@ export default class NavBar extends React.Component {
         <Container>
           <Navbar.Brand href="#home">
             <img
+              draggable="false"
               src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Linkedin_icon.svg/240px-Linkedin_icon.svg.png"
               alt="LinkInIcon"
               width="34"
