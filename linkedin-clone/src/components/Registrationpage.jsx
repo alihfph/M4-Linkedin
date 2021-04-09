@@ -1,4 +1,4 @@
-import { Form, Button, Container } from "react-bootstrap";
+// import { Form, Button, Container } from "react-bootstrap";
 import React from "react";
 import toast, { Toaster } from "react-hot-toast";
 import "./styles/login.css";
@@ -151,6 +151,7 @@ export default class Register extends React.Component {
           draggable="false"
           className="logoIn"
           src="https://www.shareicon.net/data/512x512/2016/07/08/117028_media_512x512.png"
+          alt=""
         />
       </div>
     );

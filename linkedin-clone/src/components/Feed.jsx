@@ -115,6 +115,7 @@ class Feed extends React.Component {
         this.setState({
           posts: data.filter((post) => post.user).slice(460, 480),
         });
+        // console.log(data);
         console.log(this.state.posts);
       }
     } catch (error) {
