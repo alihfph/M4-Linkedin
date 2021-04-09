@@ -369,10 +369,10 @@ class Profile extends React.Component {
                         <p>
                           <h6 style={{ color: "black" }}>From :</h6>
                           {moment(experience.startDate).format(
-                            "MMMM Do YYYY"
+                            "Do MMMM YYYY"
                           )}{" "}
                           <h6 style={{ color: "black" }}>To:</h6>{" "}
-                          {moment(experience.endDate).format("MMMM Do YYYY")}
+                          {moment(experience.endDate).format("Do MMMM YYYY")}
                         </p>
                       </div>
                       <div>
