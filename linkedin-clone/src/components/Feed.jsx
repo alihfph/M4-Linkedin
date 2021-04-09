@@ -26,7 +26,8 @@ class Feed extends React.Component {
     posts: [],
     body: {
       text: "",
-      image: "",
+      image:
+        "https://cdn.ilpost.it/wp-content/uploads/2019/10/ilpost-anteprima-colore.png?x72029",
       _id: "",
     },
   };
@@ -36,6 +37,7 @@ class Feed extends React.Component {
     this.props.history.push("/register");
   };
   fetchDataAndShowModal = (id) => {
+    this.setState({ _id: id });
     this.handleShow();
     this.getPosts(id);
   };
@@ -97,29 +99,58 @@ class Feed extends React.Component {
     }
   };
 
-  getPosts = async () => {
-    try {
-      let response = await fetch(
-        "https://striveschool-api.herokuapp.com/api/posts/",
-        {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
+  getPosts = async (id) => {
+    if (id) {
+      try {
+        let response = await fetch(
+          "https://striveschool-api.herokuapp.com/api/posts/" + id,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        );
+        if (response.ok) {
+          toast("Initializing content..", {
+            icon: "⏳",
+          });
+          let data = await response.json();
+          this.setState({
+            body: data,
+          });
+          // console.log(data);
+          console.log(this.state.body);
         }
-      );
-      if (response.ok) {
-        toast("Initializing content..", {
-          icon: "⏳",
-        });
-        let data = await response.json();
-        this.setState({
-          posts: data.filter((post) => post.user).slice(460, 480),
-        });
-        // console.log(data);
-        console.log(this.state.posts);
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
+    } else {
+      try {
+        let response = await fetch(
+          "https://striveschool-api.herokuapp.com/api/posts/",
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        );
+        if (response.ok) {
+          toast("Initializing content..", {
+            icon: "⏳",
+          });
+          let data = await response.json();
+          this.setState({
+            posts: data
+              .filter((post) => post.user)
+              .slice(-20)
+              .reverse(),
+          });
+          // console.log(data);
+          console.log(this.state.posts);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
   componentDidMount() {
@@ -184,7 +215,7 @@ class Feed extends React.Component {
               </Card>
             </Col>
             <Col xs={6}>
-              <PostMaker />
+              <PostMaker fetch={this.getPosts} />
               {console.log(this.state.posts.length)}
 
               {!this.state.posts.length > 0 ? (
@@ -206,13 +237,6 @@ class Feed extends React.Component {
                   </div>
                 </Container>
               ) : (
-                ((
-                  <div>
-                    {setTimeout(() => {
-                      toast.success("Content loaded successfully!");
-                    }, 1000)}
-                  </div>
-                ),
                 this.state.posts.map((post) => {
                   return (
                     <div className="postCard">
@@ -268,7 +292,7 @@ class Feed extends React.Component {
                       </div>
                     </div>
                   );
-                }))
+                })
               )}
             </Col>
             <Col className="d-none d-xl-block" xs={3}>
@@ -278,92 +302,33 @@ class Feed extends React.Component {
           <Modal show={this.state.show}>
             <Modal.Header closeButton={this.onHide}>
               <Modal.Title>
-                {this.state.body._id ? "Edit " : "Add "}experience
+                {this.state.body._id ? "Edit your post!" : <div></div>}
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <Form
                 onSubmit={(e) => {
                   e.preventDefault();
-                  this.postExp();
+                  this.editPost();
                 }}
               >
-                <Form.Group>
-                  <Form.Label>Role</Form.Label>
+                {/* <Form.Group>
+                  <Form.Label>Image</Form.Label>
                   <Form.Control
                     onChange={(e) =>
                       this.setState({
                         body: {
                           ...this.state.body,
-                          role: e.target.value,
+                          image: e.target.value,
                         },
                       })
                     }
-                    value={this.state.body.role}
-                    type="text"
-                    placeholder="role"
+                    value={this.state.body.image}
+                    as="url"
                   />
-                </Form.Group>
+                </Form.Group> */}
                 <Form.Group>
-                  <Form.Label>Company</Form.Label>
-                  <Form.Control
-                    onChange={(e) =>
-                      this.setState({
-                        body: { ...this.state.body, company: e.target.value },
-                      })
-                    }
-                    value={this.state.body.company}
-                    type="text"
-                    placeholder="company"
-                  />
-                </Form.Group>
-                <Row>
-                  <Col>
-                    <label> Start Date</label>
-                    <input
-                      onChange={(e) =>
-                        this.setState({
-                          body: {
-                            ...this.state.body,
-                            startDate: e.target.value,
-                          },
-                        })
-                      }
-                      value={this.state.body.startDate}
-                      type="date"
-                    />
-                  </Col>
-                  <Col>
-                    <label>End Date</label>
-                    <input
-                      onChange={(e) =>
-                        this.setState({
-                          body: { ...this.state.body, endDate: e.target.value },
-                        })
-                      }
-                      value={this.state.body.endDate}
-                      type="date"
-                    />
-                  </Col>
-                </Row>
-                <Form.Group>
-                  <Form.Label>Description</Form.Label>
-                  <Form.Control
-                    onChange={(e) =>
-                      this.setState({
-                        body: {
-                          ...this.state.body,
-                          description: e.target.value,
-                        },
-                      })
-                    }
-                    value={this.state.body.description}
-                    as="textarea"
-                    rows={3}
-                  />
-                </Form.Group>
-                <Form.Group>
-                  <Form.Label>Area</Form.Label>
+                  <Form.Label>Your post</Form.Label>
                   <Form.Control
                     onChange={(e) =>
                       this.setState({
@@ -372,7 +337,7 @@ class Feed extends React.Component {
                     }
                     value={this.state.body.text}
                     type="text"
-                    placeholder="area"
+                    placeholder="your previous post"
                   />
                 </Form.Group>
               </Form>

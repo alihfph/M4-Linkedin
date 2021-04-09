@@ -26,7 +26,7 @@ class PostMaker extends React.Component {
       if (response.ok) {
         alert("Post added");
         // this.uploadImage();
-
+        this.props.fetch();
         console.log(this.state.post);
         this.setState({ post: { text: "" } });
       } else {

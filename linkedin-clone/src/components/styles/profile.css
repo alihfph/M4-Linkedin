@@ -34,6 +34,7 @@
 }
 .Experiences {
   /* position: relative; */
+  padding: 10px;
   transition: 0.25s ease;
   background-color: white;
   margin-top: 20px;
@@ -81,4 +82,28 @@
 
 .proPic:hover > img {
   box-shadow: 0px 0px 20px -6px;
+}
+.experienceContainer {
+  align-items: center;
+  padding: 10px;
+  justify-content: space-between;
+  border-radius: 20px;
+  background-color: rgba(27, 126, 207, 0.205);
+}
+.experienceContainer > p {
+  margin: 0;
+}
+.experienceContainer > .text-muted > p {
+  margin: 0;
+}
+
+.editButton {
+  border: none;
+  border-radius: 50%;
+  background-color: rgb(141, 182, 228);
+}
+.delButton {
+  border: none;
+  border-radius: 50%;
+  background-color: rgb(230, 127, 127);
 }

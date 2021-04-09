@@ -9,6 +9,8 @@ import {
   Button,
   Form,
 } from "react-bootstrap";
+import { TiDeleteOutline } from "react-icons/ti";
+import { RiEditFill } from "react-icons/ri";
 import moment from "moment";
 import Adv from "./Adv";
 import "./styles/profile.css";
@@ -21,6 +23,17 @@ class Profile extends React.Component {
     relatedProfiles: [],
     suggestedProfiles: [],
     experiences: [],
+    items: [
+      "item",
+      "item",
+      "item",
+      "item",
+      "item",
+      "item",
+      "item",
+      "item",
+      "item",
+    ],
     body: {
       role: "",
       company: "",
@@ -290,6 +303,7 @@ class Profile extends React.Component {
               </Card.Body>
             </Card>
             <div className="Experiences">
+              <h3>Experiences</h3>
               <div>
                 <Row>
                   <Col className="alignToTheRight" xs={12}>
@@ -302,41 +316,51 @@ class Profile extends React.Component {
                   </Col>
                 </Row>
               </div>
+
               {this.state.experiences.length > 0 &&
                 this.state.experiences.map((experience) => (
-                  <div className="mt-3" key={experience._id}>
-                    <Row>
-                      <Col xs={5}>
-                        <strong>{experience.company}</strong>
-                        <p>{experience.description}</p>
-                      </Col>
-                      <Col xs={5}>
-                        <div className="text-muted">
-                          <p>
-                            {moment(experience.startDate).format(
-                              "MMMM Do YYYY"
-                            )}
-                            {moment(experience.endDate).format("MMMM Do YYYY")}
-                          </p>
+                  <div className="mt-3 " key={experience._id}>
+                    <div className="experienceContainer rope">
+                      <img
+                        src="https://lh3.googleusercontent.com/DK8s-1rXnnhgrZiHvgDmova7Ru4JdNw_uIgY8r4FiwT99bRBrn6kuWmNcYOBw8yNxvKs6GQ=s85"
+                        alt={experience._id}
+                      />
+                      <div>
+                        <div className="stick">
+                          <strong>{experience.company}</strong>
+                          <p>{experience.description}</p>
                         </div>
-                      </Col>
-                      <Col xs={1}>
+                      </div>
+                      <div className="text-muted dates">
+                        <p>
+                          <h6 style={{ color: "black" }}>From :</h6>
+                          {moment(experience.startDate).format(
+                            "MMMM Do YYYY"
+                          )}{" "}
+                          <h6 style={{ color: "black" }}>To:</h6>{" "}
+                          {moment(experience.endDate).format("MMMM Do YYYY")}
+                        </p>
+                      </div>
+                      <div>
                         <button
                           onClick={() =>
                             this.fetchDataAndShowModal(experience._id)
                           }
+                          className="editButton"
                         >
-                          Edit
+                          <RiEditFill />
                         </button>
-                        <button onClick={() => this.deleteItem(experience._id)}>
-                          DELETE
+                        <button
+                          className="delButton"
+                          onClick={() => this.deleteItem(experience._id)}
+                        >
+                          <TiDeleteOutline />
                         </button>
-                      </Col>
-                    </Row>
+                      </div>
+                    </div>
                   </div>
                 ))}
             </div>
-            <div className="Skills">skills will be fetched here</div>
           </Col>
           <Col
             md={3}
@@ -533,7 +557,6 @@ class Profile extends React.Component {
             )}
           </Modal.Footer>
         </Modal>
-        <div imgModal={this.state.imgModal}></div>
       </Container>
     );
   }
