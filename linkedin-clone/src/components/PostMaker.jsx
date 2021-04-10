@@ -31,8 +31,6 @@ class PostMaker extends React.Component {
         this.uploadPostImage(this.props.postId());
         this.setState({ post: { text: "" } });
         console.log(this.state.post);
-        // this.uploadPostImage(this.props.postId());
-        // console.log(this.state.post._id);
       } else {
         alert("Failed to add the post");
       }
