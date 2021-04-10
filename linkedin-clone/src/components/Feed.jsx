@@ -146,7 +146,6 @@ class Feed extends React.Component {
               .reverse(),
           });
           // console.log(data);
-          console.log(this.state.posts);
         }
       } catch (error) {
         console.log(error);
@@ -157,6 +156,10 @@ class Feed extends React.Component {
     this.getPosts();
     this.props.fetch();
   }
+  postsId = () => {
+    return this.state.posts[0]._id;
+  };
+
   render() {
     return (
       <>
@@ -215,8 +218,7 @@ class Feed extends React.Component {
               </Card>
             </Col>
             <Col xs={6}>
-              <PostMaker fetch={this.getPosts} />
-              {console.log(this.state.posts.length)}
+              <PostMaker fetch={this.getPosts} postId={this.postsId} />
 
               {!this.state.posts.length > 0 ? (
                 <Container>

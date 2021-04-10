@@ -3,11 +3,10 @@ import { Form } from "react-bootstrap";
 
 class PostMaker extends React.Component {
   state = {
-    posts: [],
     post: {
       text: "",
     },
-    image: null,
+    file: "",
   };
 
   uploadPost = async () => {
@@ -24,11 +23,16 @@ class PostMaker extends React.Component {
         }
       );
       if (response.ok) {
+        await this.props.fetch();
         alert("Post added");
         // this.uploadImage();
-        this.props.fetch();
-        console.log(this.state.post);
+
+        console.log(this.props.postId());
+        this.uploadPostImage(this.props.postId());
         this.setState({ post: { text: "" } });
+        console.log(this.state.post);
+        // this.uploadPostImage(this.props.postId());
+        // console.log(this.state.post._id);
       } else {
         alert("Failed to add the post");
       }
@@ -37,27 +41,36 @@ class PostMaker extends React.Component {
     }
   };
 
-  uploadImage = async () => {
-    try {
-      let response = await fetch(
-        "https://striveschool-api.herokuapp.com/api/posts/",
-        {
-          method: "POST",
-          // body: data,
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-            "Content-Type": "multipart/form-data;",
-          },
+  uploadPostImage = async (id) => {
+    console.log(this.state.file);
+    if (this.state.file === null) {
+      console.log("No image or file added");
+    } else {
+      let image = new FormData();
+      image.append("post", this.state.file);
+
+      try {
+        const response = await fetch(
+          "https://striveschool-api.herokuapp.com/api/posts/" + id,
+          {
+            method: "POST",
+            body: image,
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        );
+        if (response.ok) {
+          console.log("Post pic added");
+          console.log(this.props.postId());
+          this.props.fetch();
+          this.setState({ file: null });
+        } else {
+          console.log("Error while adding the pic");
         }
-      );
-      if (response.ok) {
-        alert("Image added");
-        console.log(this.state.image);
-      } else {
-        alert("Failed to add the image");
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -82,18 +95,17 @@ class PostMaker extends React.Component {
               rows={1}
             />
           </Form.Group>
-          {/* <Form.Group>
+          <Form.Group>
             <Form.File
               id="postimage"
               onChange={(e) =>
                 this.setState({
-                  post: { ...this.state.image, image: e.target.value },
+                  file: e.target.files[0],
                 })
               }
-              value={this.state.image}
               label="Upload image"
             />
-          </Form.Group> */}
+          </Form.Group>
           <button onClick={() => this.uploadPost()}>Post</button>
         </Form>
       </div>
