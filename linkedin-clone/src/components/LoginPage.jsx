@@ -8,7 +8,7 @@ export default class Login extends React.Component {
     password: "",
     username: "",
   };
-  notify = () => toast("Here is your toast.");
+
   logUser = async () => {
     try {
       let response = await fetch(

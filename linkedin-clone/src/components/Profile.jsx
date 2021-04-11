@@ -9,6 +9,7 @@ import {
   Button,
   Form,
 } from "react-bootstrap";
+import toast, { Toaster } from "react-hot-toast";
 import { TiDeleteOutline } from "react-icons/ti";
 import { RiEditFill } from "react-icons/ri";
 import moment from "moment";
@@ -70,13 +71,13 @@ class Profile extends React.Component {
         }
       );
       if (response.ok) {
-        alert("Experiences ADDED");
+        toast.success("Working experience added successfully!🥳🥳");
         this.getExp();
         this.setState({
           body: {},
         });
       } else {
-        alert("You failed your edit");
+        toast.error("You failed your edit 🤖");
       }
     } catch (error) {
       console.log(error);
@@ -95,10 +96,10 @@ class Profile extends React.Component {
         }
       );
       if (response.ok) {
-        alert("Experience deleted");
+        toast.success("Experience deleted");
         this.getExp();
       } else {
-        alert("Error in the delete process");
+        toast.error("Error in the delete process 🤖");
       }
     } catch (error) {
       console.log(error);
@@ -230,13 +231,13 @@ class Profile extends React.Component {
         }
       );
       if (response.ok) {
-        alert("Experiences ADDED");
+        toast.success("Experiences ADDED");
         this.getExp();
         this.setState({
           body: {},
         });
       } else {
-        alert("You failed your edit");
+        toast.error("You failed your edit🤖");
       }
     } catch (error) {
       console.log(error);
@@ -557,6 +558,22 @@ class Profile extends React.Component {
             )}
           </Modal.Footer>
         </Modal>
+        <Toaster
+          position="top-right"
+          reverseOrder={false}
+          toastOptions={{
+            // Define default options
+            className: "",
+            style: {
+              margin: "40px",
+              background: "#363636",
+              color: "#fff",
+              zIndex: 1,
+            },
+            duration: 5000,
+            // Default options for specific types
+          }}
+        />
       </Container>
     );
   }
