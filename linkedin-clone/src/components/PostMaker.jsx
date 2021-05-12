@@ -1,113 +1,54 @@
-import React from "react";
-import { Form } from "react-bootstrap";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+const PostMaker = () => {
+  const history = useHistory();
+  const [text, settext] = useState("");
 
-class PostMaker extends React.Component {
-  state = {
-    post: {
-      text: "",
-    },
-    file: "",
-  };
-
-  uploadPost = async () => {
-    try {
-      let response = await fetch(
-        "https://striveschool-api.herokuapp.com/api/posts/",
-        {
-          method: "POST",
-          body: JSON.stringify(this.state.post),
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (response.ok) {
-        await this.props.fetch();
-        alert("Post added");
-        // this.uploadImage();
-
-        console.log(this.props.postId());
-        this.uploadPostImage(this.props.postId());
-        this.setState({ post: { text: "" } });
-        console.log(this.state.post);
-      } else {
-        alert("Failed to add the post");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  uploadPostImage = async (id) => {
-    console.log(this.state.file);
-    if (this.state.file === null) {
-      console.log("No image or file added");
-    } else {
-      let image = new FormData();
-      image.append("post", this.state.file);
-
-      try {
-        const response = await fetch(
-          "https://striveschool-api.herokuapp.com/api/posts/" + id,
-          {
-            method: "POST",
-            body: image,
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("token"),
-            },
-          }
-        );
-        if (response.ok) {
-          console.log("Post pic added");
-          console.log(this.props.postId());
-          this.props.fetch();
-          this.setState({ file: null });
+  const PostData = () => {
+    const user = localStorage.getItem("user");
+    const result = JSON.parse(user);
+    console.log(result._id);
+    console.log(`http://localhost:3005/posts/` + result._id);
+    fetch(`http://localhost:3005/posts/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+      body: JSON.stringify({
+        text: text
+      }),
+    })
+      .then((res) => res.json(console.log(res)))
+      .then((data) => {
+        console.log(data);
+        if (data.error) {
+          console.log(data.error);
         } else {
-          console.log("Error while adding the pic");
+          console.log(data.message);
+          history.push("/");
         }
-      } catch (error) {
-        console.log(error);
-      }
-    }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
-  render() {
-    return (
-      <div style={{ minHeight: "10vh", backgroundColor: "white" }}>
-        <Form
-          onSubmit={(e) => {
-            e.preventDefault();
-          }}
-        >
-          <Form.Group controlId="textarea">
-            <Form.Control
-              as="textarea"
-              onChange={(e) =>
-                this.setState({
-                  post: { ...this.state.post, text: e.target.value },
-                })
-              }
-              value={this.state.post.text}
-              placeholder="Start a post"
-              rows={1}
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.File
-              id="postimage"
-              onChange={(e) =>
-                this.setState({
-                  file: e.target.files[0],
-                })
-              }
-              label="Upload image"
-            />
-          </Form.Group>
-          <button onClick={() => this.uploadPost()}>Post</button>
-        </Form>
+  return (
+    <div>
+      <div>
+        <h2>Linkdin</h2>
+        <input
+          type="text"
+          placeholder="text"
+          value={text}
+          onChange={(e) => settext(e.target.value)}
+        />
+
+        <button onClick={() => PostData()}>Submit</button>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
+
 export default PostMaker;

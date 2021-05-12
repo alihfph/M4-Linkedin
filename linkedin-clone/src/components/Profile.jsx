@@ -59,13 +59,13 @@ class Profile extends React.Component {
   editExp = async (id) => {
     try {
       let response = await fetch(
-        `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences/` +
+        `profile/${this.state.myProfile._id}/experiences/` +
           id,
         {
           method: "PUT",
           body: JSON.stringify(this.state.body),
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
+            Authorization: "Bearer " + localStorage.getItem("jwt"),
             "Content-Type": "application/json",
           },
         }
@@ -86,12 +86,12 @@ class Profile extends React.Component {
   deleteItem = async (id) => {
     try {
       let response = await fetch(
-        `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences/` +
+        `/profile/${this.state.myProfile._id}/experiences/` +
           id,
         {
           method: "DELETE",
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
+            Authorization: "Bearer " + localStorage.getItem("jwt"),
           },
         }
       );
@@ -108,10 +108,10 @@ class Profile extends React.Component {
   catchThemAll = async () => {
     try {
       let response = await fetch(
-        "https://striveschool-api.herokuapp.com/api/profile/",
+        "/profile/",
         {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
+            Authorization: "Bearer " + localStorage.getItem("jwt"),
           },
         }
       );
@@ -127,7 +127,7 @@ class Profile extends React.Component {
 
   fetchMe = async () => {
     const url =
-      "https://striveschool-api.herokuapp.com/api/profile/" +
+      "/profile/" +
       this.props.match.params.id;
     // const url =
     //   this.props.match.params.id === "me"
@@ -136,7 +136,7 @@ class Profile extends React.Component {
     try {
       let response = await fetch(url, {
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
+          Authorization: "Bearer " + localStorage.getItem("jwk"),
         },
       });
       if (response.ok) {
@@ -153,11 +153,11 @@ class Profile extends React.Component {
     try {
       if (id) {
         let response = await fetch(
-          `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences/` +
+          `/profile/${this.state.myProfile._id}/experiences/` +
             id,
           {
             headers: {
-              Authorization: "Bearer " + localStorage.getItem("token"),
+              Authorization: "Bearer " + localStorage.getItem("jwt"),
             },
           }
         );
@@ -172,10 +172,10 @@ class Profile extends React.Component {
         }
       } else {
         let response = await fetch(
-          `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences`,
+          `/profile/${this.state.myProfile._id}/experiences`,
           {
             headers: {
-              Authorization: "Bearer " + localStorage.getItem("token"),
+              Authorization: "Bearer " + localStorage.getItem("jwt"),
             },
           }
         );
@@ -200,12 +200,12 @@ class Profile extends React.Component {
 
       try {
         const response = await fetch(
-          `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences/${id}/picture`,
+          `/profile/${this.state.myProfile._id}/experiences/${id}/picture`,
           {
             method: "POST",
             body: image,
             headers: {
-              Authorization: "Bearer " + localStorage.getItem("token"),
+              Authorization: "Bearer " + localStorage.getItem("jwt"),
             },
           }
         );
@@ -256,12 +256,12 @@ class Profile extends React.Component {
     e.preventDefault();
     try {
       let response = await fetch(
-        `https://striveschool-api.herokuapp.com/api/profile/${this.state.myProfile._id}/experiences`,
+        `/profile/${this.state.myProfile._id}/experiences`,
         {
           method: "POST",
           body: JSON.stringify(this.state.body),
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
+            Authorization: "Bearer " + localStorage.getItem("jwt"),
             "Content-Type": "application/json",
           },
         }
@@ -458,7 +458,7 @@ class Profile extends React.Component {
                           <img
                             height={40}
                             src={user.image}
-                            alt="user profile image"
+                            alt={user.surname}
                           />
                           <p>
                             {user.name} {user.surname}

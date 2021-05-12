@@ -51,17 +51,14 @@ class Feed extends React.Component {
   // https: //striveschool-api.herokuapp.com/api/posts/
   editPost = async (id) => {
     try {
-      let response = await fetch(
-        `https://striveschool-api.herokuapp.com/api/posts/` + id,
-        {
-          method: "PUT",
-          body: JSON.stringify(this.state.body),
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      let response = await fetch(`/posts/` + id, {
+        method: "PUT",
+        body: JSON.stringify(this.state.body),
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("jwt"),
+          "Content-Type": "application/json",
+        },
+      });
       if (response.ok) {
         toast.success("Your post was edited successfully😎");
         this.getPosts();
@@ -77,15 +74,12 @@ class Feed extends React.Component {
   };
   deletePost = async (id) => {
     try {
-      let response = await fetch(
-        `https://striveschool-api.herokuapp.com/api/posts/` + id,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        }
-      );
+      let response = await fetch(`/posts` + id, {
+        method: "DELETE",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("jwt"),
+        },
+      });
       if (response.ok) {
         alert("Post deleted");
         this.getPosts();
@@ -102,14 +96,12 @@ class Feed extends React.Component {
   getPosts = async (id) => {
     if (id) {
       try {
-        let response = await fetch(
-          "https://striveschool-api.herokuapp.com/api/posts/" + id,
-          {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("token"),
-            },
-          }
-        );
+        
+        let response = await fetch(`/posts/` , {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("jwt"),
+          },
+        });
         if (response.ok) {
           toast("Initializing content..", {
             icon: "⏳",
@@ -126,14 +118,11 @@ class Feed extends React.Component {
       }
     } else {
       try {
-        let response = await fetch(
-          "https://striveschool-api.herokuapp.com/api/posts/",
-          {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("token"),
-            },
-          }
-        );
+        let response = await fetch("/posts/", {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("jwt"),
+          },
+        });
         if (response.ok) {
           toast("Initializing content..", {
             icon: "⏳",
@@ -142,7 +131,7 @@ class Feed extends React.Component {
           this.setState({
             posts: data
               .filter((post) => post.user)
-              .slice(-20)
+              .slice(0)
               .reverse(),
           });
           // console.log(data);
@@ -194,6 +183,7 @@ class Feed extends React.Component {
                     onClick={() => this.props.history.push("/user/me")}
                     className="profPic"
                     src={this.props.state.data.image}
+                    alt="this os"
                   />
                   <h6>
                     {this.props.state.data.name} {this.props.state.data.surname}

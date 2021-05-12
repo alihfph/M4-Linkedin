@@ -6,40 +6,39 @@ import { Link } from "react-router-dom";
 export default class Login extends React.Component {
   state = {
     password: "",
-    username: "",
+    email: "",
   };
   notify = () => toast("Here is your toast.");
   logUser = async () => {
     try {
-      let response = await fetch(
-        "https://striveschool-api.herokuapp.com/api/account/login",
-        {
-          method: "POST",
-          body: JSON.stringify(this.state),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      let response = await fetch("http://localhost:3005/login/signin", {
+        method: "POST",
+        body: JSON.stringify(this.state),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       if (response.ok) {
         const res = await response.json();
-        const access_token = await res.access_token;
+        // const access_token = await res.access_token;
 
-        localStorage.setItem("token", access_token);
+        // localStorage.setItem("jwt", access_token);
 
-        toast.success("Welcome back " + this.state.username + " 🥳🤙🏻");
+        toast.success("Welcome back " + this.state.email + " 🥳🤙🏻");
 
         this.setState({
           password: "",
-          username: "",
+          email: "",
         });
+        localStorage.setItem("jwt", res.token);
+        localStorage.setItem("user", JSON.stringify(res.user));
         setTimeout(() => {
           this.props.access();
-        }, 4000);
+        }, 1000);
       } else {
         toast.error(
           "User " +
-            this.state.username +
+            this.state.email +
             " or password aren't in out database, please try again 🤯👾."
         );
       }
@@ -57,16 +56,16 @@ export default class Login extends React.Component {
               <p>Stay updated on your professional world</p>
             </div>
           </div>
-          <label className="inputLabel">Username</label>
+          <label className="inputLabel">emailname</label>
           <input
             className="formInput"
             onChange={(e) =>
               this.setState({
                 ...this.state,
-                username: e.target.value,
+                email: e.target.value,
               })
             }
-            value={this.state.username}
+            value={this.state.email}
             type="text"
           ></input>
           <label className="inputLabel">Password</label>

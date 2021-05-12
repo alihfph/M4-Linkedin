@@ -5,8 +5,9 @@ import "./styles/login.css";
 import { Link } from "react-router-dom";
 export default class Register extends React.Component {
   state = {
-    name: "",
+    firstName: "",
     surname: "",
+    email: "",
     password: "",
     username: "",
     image: "",
@@ -15,31 +16,32 @@ export default class Register extends React.Component {
   notify = () => toast("Here is your toast.");
   logUser = async () => {
     try {
-      let response = await fetch(
-        "https://striveschool-api.herokuapp.com/api/account/register",
-        {
-          method: "POST",
-          body: JSON.stringify(this.state),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      console.log("!!!!");
+      let response = await fetch("http://localhost:3005/login/signup", {
+        method: "POST",
+        body: JSON.stringify(this.state),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(response);
       if (response.ok) {
-        const res = await response.json();
-        const access_token = await res.access_token;
-
-        localStorage.setItem("token", access_token);
+        // const res = await response.json();
 
         toast.success("Welcome " + this.state.username + "to Linkedin 🥳");
 
         this.setState({
+          firstName: "",
+          surname: "",
+          email: "",
           password: "",
           username: "",
+          image: "",
+          bio: "",
         });
         setTimeout(() => {
           this.props.access();
-        }, 4000);
+        }, 1000);
       } else {
         toast.error("Something went wrong 🤯👾.");
       }
@@ -63,10 +65,10 @@ export default class Register extends React.Component {
             onChange={(e) =>
               this.setState({
                 ...this.state,
-                name: e.target.value,
+                firstName: e.target.value,
               })
             }
-            value={this.state.name}
+            value={this.state.firstName}
             type="text"
           ></input>
           <label className="inputLabel">surname</label>
@@ -91,6 +93,18 @@ export default class Register extends React.Component {
               })
             }
             value={this.state.username}
+            type="text"
+          ></input>
+          <label className="inputLabel">Email</label>
+          <input
+            className="formInput"
+            onChange={(e) =>
+              this.setState({
+                ...this.state,
+                email: e.target.value,
+              })
+            }
+            value={this.state.email}
             type="text"
           ></input>
           <label className="inputLabel">Password</label>

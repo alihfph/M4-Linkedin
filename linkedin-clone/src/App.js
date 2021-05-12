@@ -27,10 +27,10 @@ class App extends React.Component {
   getActualUser = async () => {
     try {
       let response = await fetch(
-        "https://striveschool-api.herokuapp.com/api/profile/me",
+        "/profile/me",
         {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
+            Authorization: "Bearer " + localStorage.getItem("jwt"),
           },
         }
       );
