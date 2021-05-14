@@ -7,13 +7,14 @@ const PostMaker = () => {
   const PostData = () => {
     const user = localStorage.getItem("user");
     const result = JSON.parse(user);
-    console.log(result._id);
-    console.log(`http://localhost:3005/posts/` + result._id);
-    fetch(`http://localhost:3005/posts/`, {
+    // const jwt = localStorage.getItem("jwt")
+    console.log(result);
+
+    fetch(`http://localhost:3005/posts/`+ result._id,{
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("jwt"),
+        Authorization: `Bearer `+ localStorage.getItem("jwt"),
       },
       body: JSON.stringify({
         text: text
@@ -21,11 +22,14 @@ const PostMaker = () => {
     })
       .then((res) => res.json(console.log(res)))
       .then((data) => {
+        alert("post id =>"+ data._id)
         console.log(data);
         if (data.error) {
           console.log(data.error);
+          
         } else {
           console.log(data.message);
+          
           history.push("/");
         }
       })

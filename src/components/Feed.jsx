@@ -74,7 +74,7 @@ class Feed extends React.Component {
   };
   deletePost = async (id) => {
     try {
-      let response = await fetch(`/posts` + id, {
+      let response = await fetch(`/posts/` + id, {
         method: "DELETE",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("jwt"),
@@ -85,7 +85,7 @@ class Feed extends React.Component {
         this.getPosts();
       } else {
         toast.error(
-          "What are you trying to do?!🤌🏼 You cannot delete other people posts 🤦🏼 "
+          "not possible to delete other posts 🤦🏼 "
         );
       }
     } catch (error) {
@@ -97,7 +97,7 @@ class Feed extends React.Component {
     if (id) {
       try {
         
-        let response = await fetch(`/posts/` , {
+        let response = await fetch(`/posts` , {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("jwt"),
           },
@@ -118,9 +118,9 @@ class Feed extends React.Component {
       }
     } else {
       try {
-        let response = await fetch("/posts/", {
+        let response = await fetch("/posts", {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("jwt"),
+            Authorization: `Bearer `+ localStorage.getItem("jwt"),
           },
         });
         if (response.ok) {
@@ -130,11 +130,10 @@ class Feed extends React.Component {
           let data = await response.json();
           this.setState({
             posts: data
-              .filter((post) => post.user)
+              .filter((post) => post)
               .slice(0)
-              .reverse(),
           });
-          // console.log(data);
+          console.log(data);
         }
       } catch (error) {
         console.log(error);
@@ -186,7 +185,7 @@ class Feed extends React.Component {
                     alt="this os"
                   />
                   <h6>
-                    {this.props.state.data.name} {this.props.state.data.surname}
+                    {this.props.state.data.firstName} {this.props.state.data.surname}
                   </h6>
                 </div>
                 <Card.Body>
@@ -257,7 +256,7 @@ class Feed extends React.Component {
                           }
                         />
                         <div className="userTag">
-                          <h4>{post.user.name + " " + post.user.surname} </h4>
+                          <h4>{post.name + " " + post.surname} </h4>
                           <p className="text-muted tag">
                             {"@" + post.username}
                           </p>

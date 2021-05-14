@@ -108,7 +108,7 @@ class Profile extends React.Component {
   catchThemAll = async () => {
     try {
       let response = await fetch(
-        "/profile/",
+        "/profile",
         {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("jwt"),
@@ -117,8 +117,9 @@ class Profile extends React.Component {
       );
       if (response.ok) {
         let allProfiles = await response.json();
-        this.setState({ relatedProfiles: allProfiles.slice(95, 100) });
-        this.setState({ suggestedProfiles: allProfiles.slice(100, 105) });
+        this.setState({ relatedProfiles: allProfiles });
+        this.setState({ suggestedProfiles: allProfiles });
+        console.log(response)
       }
     } catch (error) {
       console.log(error);
